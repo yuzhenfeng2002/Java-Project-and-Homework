@@ -7,10 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
 #include <string>
-#include <ctype.h>
-
 
 using namespace std;
 
@@ -24,16 +21,15 @@ bool isSeparator(char ch)
     return false;
 }
 
-bool isPunctuator(char ch) // check if the given character is a punctuator or not
+bool isOperator(char ch) // check if the given character is an operator or not
 {
-    if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' ||
-        ch == '/' || ch == ',' || ch == ';' || ch == '>' ||
-        ch == '<' || ch == '=' || ch == '(' || ch == ')' ||
-        ch == '[' || ch == ']' || ch == '{' || ch == '}' ||
-        ch == '&' || ch == '|' || ch == ' ' || ch == '\t' || ch == '\n')
-        {
-            return true;
-        }
+    if (ch == '+' || ch == '-' || ch == '*' || ch == '%' ||
+        ch == '/' || ch == '>' || ch == '<' || ch == '!' ||
+        ch == '=' || ch == '|' || ch == '&' || ch == '^' ||
+        ch == '~' || ch == '?' || ch == ':' || ch == '.')
+    {
+       return true;
+    }
     return false;
 }
 
@@ -51,18 +47,6 @@ bool validIdentifier(char* str) // check if the given identifier is valid or not
         }
     }
     return true;
-}
-
-bool isOperator(char ch) // check if the given character is an operator or not
-{
-    if (ch == '+' || ch == '-' || ch == '*' || ch == '%' ||
-        ch == '/' || ch == '>' || ch == '<' || ch == '!' ||
-        ch == '=' || ch == '|' || ch == '&' || ch == '^' ||
-        ch == '~' || ch == '?' || ch == ':')
-    {
-       return true;
-    }
-    return false;
 }
 
 bool isKeyword(char *str) // check if the given substring is a keyword or not
@@ -85,33 +69,6 @@ bool isKeyword(char *str) // check if the given substring is a keyword or not
     }
 }
 
-bool isNumber(char* str) // check if the given substring is a number or not
-{
-    int i, len = strlen(str),numOfDecimal = 0;
-    if (len == 0)
-    {
-        return false;
-    }
-    for (i = 0 ; i < len ; i++)
-    {
-        if (numOfDecimal > 1 && str[i] == '.')
-        {
-            return false;
-        } else if (numOfDecimal <= 1)
-        {
-            numOfDecimal++;
-        }
-        if (str[i] != '0' && str[i] != '1' && str[i] != '2'
-            && str[i] != '3' && str[i] != '4' && str[i] != '5'
-            && str[i] != '6' && str[i] != '7' && str[i] != '8'
-            && str[i] != '9' || (str[i] == '-' && i > 0))
-            {
-                return false;
-            }
-    }
-    return true;
-}
-
 char* subString(string realStr, int l, int r) // extract the required substring from the main string
 {
     char* str = (char*) malloc(sizeof(char) * (r - l + 2));
@@ -122,7 +79,6 @@ char* subString(string realStr, int l, int r) // extract the required substring 
     }
     return str;
 }
-
 
 void lexicalAnalyse(string str)
 {
@@ -157,17 +113,28 @@ void lexicalAnalyse(string str)
             left = right;
         }
         
-        // identify the preprocessor statement
-        if (str[left] == '#')
-        {
-            cout << str << " IS A PREPROCESSOR STATEMENT";
-            break;
+        // identify the number
+        if (str[left] <= '9' && str[left] >= '0') {
+            int i = left + 1;
+            for ( ; i < len; i++) {
+                if (!((str[i] <= '9' && str[i] >= '0') || str[i] == '.' || str[i] == 'e' ||
+                      str[i] == 'E' || str[i] == '+' || str[i] == '-')) {
+                    break;
+                }
+            }
+            char* sub = subString(str, left, i - 1);
+            cout << sub << " IS A NUMBER\n";
+            right = i;
+            left = right;
         }
         
+        // identify the separator
         if (isSeparator(str[left]) == true && left == right) {
             left ++;
             right = left;
         }
+        
+        // identify the operator
         else if (isOperator(str[left]) == true && left == right) {
             int i = left + 1;
             for ( ; i < len; i++) {
@@ -180,6 +147,8 @@ void lexicalAnalyse(string str)
             right = i;
             left = right;
         }
+        
+        // identify the keyword and identifier
         else if ((isSeparator(str[right]) || isOperator(str[right]) || right == len) && left != right)
         {
             char* sub = subString(str, left, right - 1); // extract substring
@@ -187,17 +156,13 @@ void lexicalAnalyse(string str)
             {
                 cout<< sub <<" IS A KEYWORD\n";
             }
-            else if (isNumber(sub) == true)
-            {
-                cout<< sub <<" IS A NUMBER\n";
-            }
             else if (validIdentifier(sub) == true)
             {
                 cout<< sub <<" IS A VALID IDENTIFIER\n";
             }
             else if (validIdentifier(sub) == false)
             {
-                cout<< sub <<" IS NOT A VALID IDENTIFIER\n";
+                cout<< sub <<" IS AN INVALID IDENTIFIER\n";
             }
             left = right;
         }
@@ -210,9 +175,9 @@ void lexicalAnalyse(string str)
 }
 
 int main(int argc, const char * argv[]) {
-    using namespace std;
     ifstream infile;
     infile.open("/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test.c");
+    
     string line;
     while (getline(infile, line)) {
         cout << line << endl;
