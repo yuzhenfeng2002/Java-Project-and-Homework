@@ -75,108 +75,163 @@ char* subString(string realStr, int l, int r) // extract the required substring 
     for (int i = l; i <= r; i++)
     {
         str[i - l] = realStr[i];
-        str[r - l + 1] = '\0';
     }
+    str[r - l + 1] = '\0';
     return str;
 }
 
 void lexicalAnalyse(string str)
 {
-    int left = 0, right = 0;
+    static bool is_in_comment = false;
     unsigned long len = str.size();
-    while (right <= len && left <= right) {
-        // identify the string
-        if (str[left] == '"') {
-            int i = left + 1;
-            for ( ; i < len; i++) {
-                if (str[i] == '"') {
-                    break;
+    if (!is_in_comment)
+    {
+        if (str[0] == '#') {
+            cout << str << " IS A PREPROCESSOR STATEMENT\n";
+            return;
+        }
+        int left = 0, right = 0;
+        while (right <= len && left <= right) {
+            // identify the string
+            if (str[left] == '"') {
+                int i = left + 1;
+                for ( ; i < len; i++) {
+                    if (str[i] == '"') {
+                        break;
+                    }
+                }
+                char* sub = subString(str, left, i);
+                cout << sub << " IS A STRING\n";
+                right = i + 1;
+                left = right;
+            }
+            
+            // identify comment begin with "//"
+            if (left < len - 1 && str[left] == '/' && str[left + 1] == '/') {
+                char* sub = subString(str, left, int(len) - 1);
+                cout << '"' << sub << "\" IS A COMMENT\n";
+                return;
+            }
+            
+            // identify comment begin with "/*"
+            if (left < len - 1 && str[left] == '/' && str[left + 1] == '*') {
+                int i = left + 2;
+                for ( ; i < len - 1; i++) {
+                    if (str[i] == '*' && str[i + 1] == '/') {
+                        break;
+                    }
+                }
+                if (str[i] == '*' && str[i + 1] == '/') {
+                    char* sub = subString(str, left, i + 1);
+                    cout << '"' << sub << "\" IS A COMMENT\n";
+                    right = i + 2;
+                    left = right;
+                }
+                else
+                {
+                    is_in_comment = true;
+                    return;
                 }
             }
-            char* sub = subString(str, left, i);
-            cout << sub << " IS A STRING\n";
-            right = i + 1;
-            left = right;
-        }
-        
-        // identify the character
-        if (str[left] == '\'') {
-            int i = left + 1;
-            for ( ; i < len; i++) {
-                if (str[i] == '\'') {
-                    break;
+            
+            // identify the character
+            if (str[left] == '\'') {
+                int i = left + 1;
+                for ( ; i < len; i++) {
+                    if (str[i] == '\'') {
+                        break;
+                    }
                 }
+                char* sub = subString(str, left, i);
+                cout << sub << " IS A CHARACTER\n";
+                right = i + 1;
+                left = right;
             }
-            char* sub = subString(str, left, i);
-            cout << sub << " IS A CHARACTER\n";
-            right = i + 1;
-            left = right;
-        }
-        
-        // identify the number
-        if (str[left] <= '9' && str[left] >= '0') {
-            int i = left + 1;
-            for ( ; i < len; i++) {
-                if (!((str[i] <= '9' && str[i] >= '0') || str[i] == '.' || str[i] == 'e' ||
-                      str[i] == 'E' || str[i] == '+' || str[i] == '-')) {
-                    break;
+            
+            // identify the number
+            if (str[left] <= '9' && str[left] >= '0') {
+                int i = left + 1;
+                for ( ; i < len; i++) {
+                    if (!((str[i] <= '9' && str[i] >= '0') || str[i] == '.' || str[i] == 'e' ||
+                          str[i] == 'E' || str[i] == '+' || str[i] == '-')) {
+                        break;
+                    }
                 }
+                char* sub = subString(str, left, i - 1);
+                cout << sub << " IS A NUMBER\n";
+                right = i;
+                left = right;
             }
-            char* sub = subString(str, left, i - 1);
-            cout << sub << " IS A NUMBER\n";
-            right = i;
-            left = right;
-        }
-        
-        // identify the separator
-        if (isSeparator(str[left]) == true && left == right) {
-            left ++;
-            right = left;
-        }
-        
-        // identify the operator
-        else if (isOperator(str[left]) == true && left == right) {
-            int i = left + 1;
-            for ( ; i < len; i++) {
-                if (isOperator(str[i]) == false) {
-                    break;
+            
+            // identify the separator
+            if (isSeparator(str[left]) == true && left == right) {
+                left ++;
+                right = left;
+            }
+            
+            // identify the operator
+            else if (isOperator(str[left]) == true && left == right) {
+                int i = left + 1;
+                for ( ; i < len; i++) {
+                    if (isOperator(str[i]) == false) {
+                        break;
+                    }
                 }
+                char* sub = subString(str, left, i - 1);
+                cout << sub << " IS AN OPERATOR\n";
+                right = i;
+                left = right;
             }
-            char* sub = subString(str, left, i - 1);
-            cout << sub << " IS A OPERATOR\n";
-            right = i;
-            left = right;
-        }
-        
-        // identify the keyword and identifier
-        else if ((isSeparator(str[right]) || isOperator(str[right]) || right == len) && left != right)
-        {
-            char* sub = subString(str, left, right - 1); // extract substring
-            if (isKeyword(sub) == true)
+            
+            // identify the keyword and identifier
+            else if ((isSeparator(str[right]) || isOperator(str[right]) || right == len) && left != right)
             {
-                cout<< sub <<" IS A KEYWORD\n";
+                char* sub = subString(str, left, right - 1); // extract substring
+                if (isKeyword(sub) == true)
+                {
+                    cout<< sub <<" IS A KEYWORD\n";
+                }
+                else if (validIdentifier(sub) == true)
+                {
+                    cout<< sub <<" IS A VALID IDENTIFIER\n";
+                }
+                else if (validIdentifier(sub) == false)
+                {
+                    cout<< sub <<" IS AN INVALID IDENTIFIER\n";
+                }
+                left = right;
             }
-            else if (validIdentifier(sub) == true)
-            {
-                cout<< sub <<" IS A VALID IDENTIFIER\n";
+            
+            if (isSeparator(str[right]) == false && isOperator(str[right]) == false && right <= len) {
+                right ++;
             }
-            else if (validIdentifier(sub) == false)
-            {
-                cout<< sub <<" IS AN INVALID IDENTIFIER\n";
-            }
-            left = right;
         }
-        
-        if (isSeparator(str[right]) == false && isOperator(str[right]) == false && right <= len) {
-            right ++;
+    }
+    else
+    {
+        int i = 0;
+        for ( ; i < len - 1; i++) {
+            if (str[i] == '*' && str[i + 1] == '/') {
+                break;
+            }
+        }
+        if (str[i] == '*' && str[i + 1] == '/') {
+            char* sub = subString(str, i + 2, int(len) - 1);
+            is_in_comment = false;
+            cout << "STATEMENTS ABOVE INCLUDE SEVERAL COMMENTS\n";
+            lexicalAnalyse(sub);
         }
     }
     return;
 }
 
 int main(int argc, const char * argv[]) {
+    string infile_name = "/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test.c";
+    string outfile_name = "/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test_result.c";
     ifstream infile;
-    infile.open("/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test.c");
+    ofstream outfile;
+    infile.open(infile_name);
+    outfile.open(outfile_name);
     
     string line;
     while (getline(infile, line)) {
