@@ -8,8 +8,16 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
+
+vector<string> keywords = vector<string>();
+vector<string> operators = vector<string>();
+vector<string> separators = vector<string>();
+vector<string> identifiers = vector<string>();
+vector<string> constants = vector<string>();
 
 bool isSeparator(char ch)
 {
@@ -102,15 +110,9 @@ void lexicalAnalyse(string str)
                 }
                 char* sub = subString(str, left, i);
                 cout << sub << " IS A STRING\n";
+                constants.push_back(sub);
                 right = i + 1;
                 left = right;
-            }
-            
-            // identify comment begin with "//"
-            if (left < len - 1 && str[left] == '/' && str[left + 1] == '/') {
-                char* sub = subString(str, left, int(len) - 1);
-                cout << '"' << sub << "\" IS A COMMENT\n";
-                return;
             }
             
             // identify comment begin with "/*"
@@ -134,6 +136,13 @@ void lexicalAnalyse(string str)
                 }
             }
             
+            // identify comment begin with "//"
+            if (left < len - 1 && str[left] == '/' && str[left + 1] == '/') {
+                char* sub = subString(str, left, int(len) - 1);
+                cout << '"' << sub << "\" IS A COMMENT\n";
+                return;
+            }
+            
             // identify the character
             if (str[left] == '\'') {
                 int i = left + 1;
@@ -144,6 +153,7 @@ void lexicalAnalyse(string str)
                 }
                 char* sub = subString(str, left, i);
                 cout << sub << " IS A CHARACTER\n";
+                constants.push_back(sub);
                 right = i + 1;
                 left = right;
             }
@@ -159,12 +169,14 @@ void lexicalAnalyse(string str)
                 }
                 char* sub = subString(str, left, i - 1);
                 cout << sub << " IS A NUMBER\n";
+                constants.push_back(sub);
                 right = i;
                 left = right;
             }
             
             // identify the separator
             if (isSeparator(str[left]) == true && left == right) {
+                separators.push_back(string(1, str[left]));
                 left ++;
                 right = left;
             }
@@ -179,6 +191,7 @@ void lexicalAnalyse(string str)
                 }
                 char* sub = subString(str, left, i - 1);
                 cout << sub << " IS AN OPERATOR\n";
+                operators.push_back(sub);
                 right = i;
                 left = right;
             }
@@ -190,10 +203,12 @@ void lexicalAnalyse(string str)
                 if (isKeyword(sub) == true)
                 {
                     cout<< sub <<" IS A KEYWORD\n";
+                    keywords.push_back(sub);
                 }
                 else if (validIdentifier(sub) == true)
                 {
                     cout<< sub <<" IS A VALID IDENTIFIER\n";
+                    identifiers.push_back(sub);
                 }
                 else if (validIdentifier(sub) == false)
                 {
@@ -225,9 +240,19 @@ void lexicalAnalyse(string str)
     return;
 }
 
+void output(ofstream &outfile, vector<string> str_vec)
+{
+    sort(str_vec.begin(), str_vec.end());
+    str_vec.erase(unique(str_vec.begin(), str_vec.end()), str_vec.end());
+    for (int i = 0; i < str_vec.size() - 1; i++) {
+        outfile << str_vec.at(i) << ", ";
+    }
+    outfile << str_vec.at(str_vec.size() - 1);
+}
+
 int main(int argc, const char * argv[]) {
     string infile_name = "/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test.c";
-    string outfile_name = "/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test_result.c";
+    string outfile_name = "/Users/fxb/Desktop/大三上/Java语言程序设计/Homework-1/Lexical-Analysis/Lexical-Analysis/test_result.txt";
     ifstream infile;
     ofstream outfile;
     infile.open(infile_name);
@@ -240,5 +265,18 @@ int main(int argc, const char * argv[]) {
         cout << endl;
     }
     infile.close();
+    
+    // output
+    outfile << "关键字：";
+    output(outfile, keywords);
+    outfile << "\n运算符：";
+    output(outfile, operators);
+    outfile << "\n分隔符：";
+    output(outfile, separators);
+    outfile << "\n标识符：";
+    output(outfile, identifiers);
+    outfile << "\n常量值：";
+    output(outfile, constants);
+    outfile.close();
     return 0;
 }
