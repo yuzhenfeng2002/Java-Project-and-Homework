@@ -19,7 +19,7 @@ vector<string> separators = vector<string>();
 vector<string> identifiers = vector<string>();
 vector<string> constants = vector<string>();
 
-bool isSeparator(char ch)
+bool isSeparator(char ch) // check if the given character is a separator or not
 {
     if (ch == ' ' || ch == ',' || ch == ';' || ch == '(' || ch == ')' ||
         ch == '[' || ch == ']' || ch == '{' || ch == '}' || ch == '\t' || ch == '\n')
@@ -94,17 +94,19 @@ void lexicalAnalyse(string str)
     unsigned long len = str.size();
     if (!is_in_comment)
     {
-        if (str[0] == '#') {
-            cout << str << " IS A PREPROCESSOR STATEMENT\n";
-            return;
-        }
         int left = 0, right = 0;
         while (right <= len && left <= right) {
+            // identify the preprocessor statement
+            if (str[left] == '#') {
+                cout << str << " IS A PREPROCESSOR STATEMENT\n";
+                return;
+            }
+            
             // identify the string
             if (str[left] == '"') {
                 int i = left + 1;
                 for ( ; i < len; i++) {
-                    if (str[i] == '"') {
+                    if (str[i] == '"' && str[i - 1] != '\\') {
                         break;
                     }
                 }
@@ -147,7 +149,7 @@ void lexicalAnalyse(string str)
             if (str[left] == '\'') {
                 int i = left + 1;
                 for ( ; i < len; i++) {
-                    if (str[i] == '\'') {
+                    if (str[i] == '\'' && str[i - 1] != '\\') {
                         break;
                     }
                 }
@@ -162,8 +164,7 @@ void lexicalAnalyse(string str)
             if (str[left] <= '9' && str[left] >= '0') {
                 int i = left + 1;
                 for ( ; i < len; i++) {
-                    if (!((str[i] <= '9' && str[i] >= '0') || str[i] == '.' || str[i] == 'e' ||
-                          str[i] == 'E' || str[i] == '+' || str[i] == '-')) {
+                    if (!((str[i] <= '9' && str[i] >= '0') || str[i] == '.' || str[i] == 'e' || str[i] == 'E' || str[i] == '+' || str[i] == '-')) {
                         break;
                     }
                 }
@@ -175,14 +176,14 @@ void lexicalAnalyse(string str)
             }
             
             // identify the separator
-            if (isSeparator(str[left]) == true && left == right) {
+            if (isSeparator(str[right]) == true && left == right) {
                 separators.push_back(string(1, str[left]));
                 left ++;
                 right = left;
             }
             
             // identify the operator
-            else if (isOperator(str[left]) == true && left == right) {
+            else if (isOperator(str[right]) == true && left == right) {
                 int i = left + 1;
                 for ( ; i < len; i++) {
                     if (isOperator(str[i]) == false) {

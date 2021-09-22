@@ -5,6 +5,7 @@ int main(int argc, const char * argv[]) {
     double double_var_2 = 2.71; /* value of e */
     float double_var_3 = 3e+5;
     char char_var_1 = '!';
+    char char_var_2 = '\'';
     int int_var = 1;
     int_var ++;
     if (int_var == 1 && doubleVar1 < 5)
@@ -12,7 +13,7 @@ int main(int argc, const char * argv[]) {
         /*
         print the string
         */
-        printf("Hello, World!\n");
+        printf("\"Hello, World!\n\"");
     }
     return 0;
 }
