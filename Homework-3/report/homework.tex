@@ -173,4 +173,30 @@
   \label{q3_output_3}
 \end{figure}
 
+\subsection*{第四问}
+
+首先通过\verb|ssh|登录远程服务器，再通过\verb|scp|将本地的\verb|Main.java|文件上传至服务器，查看服务器上的该文件，如图\ref{q4_output_1}所示。
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{q4_output_1}
+  \caption{输出结果}
+  \label{q4_output_1}
+\end{figure}
+
+再通过\verb|javac|程序将\verb|Main.java|文件编译成\verb|Main.class|文件，如图\ref{q4_output_2}所示。
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{q4_output_2}
+  \caption{输出结果}
+  \label{q4_output_2}
+\end{figure}
+
+最后，使用\verb|java|程序启动Java虚拟机，虚拟机执行\verb|Main.class|文件中的字节码，输入参数\verb|24|，结果如图\ref{q4_output_3}所示。
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{q4_output_3}
+  \caption{输出结果}
+  \label{q4_output_3}
+\end{figure}
+
 \end{document}
