@@ -72,9 +72,10 @@ public class Main {
             for (Integer num : nums) {
                 System.out.print(num);
             }
-            System.out.println();
+            System.out.print(' ');
             nextArrange(nums);
         }
+        System.out.println();
     }
 
     private static void fullPermutationWithRepeatedElem(Integer[] nums, int numbers_of_arrangements)
@@ -85,9 +86,10 @@ public class Main {
             for (Integer num : nums) {
                 System.out.print(num);
             }
-            System.out.println();
+            System.out.print(' ');
             nextArrange(nums);
         }
+        System.out.println();
     }
 
     public static void testForQuestion1()
