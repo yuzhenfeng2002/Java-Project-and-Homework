@@ -64,18 +64,23 @@ class TextComponentFrame extends JFrame
                 BufferedReader reader = new BufferedReader(new FileReader(fileName));
                 content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
                 reader.close();
+                JOptionPane.showMessageDialog(contentArea, "Successfully loaded!");
             } catch (FileNotFoundException ex)
             {
-                try {
-                    (new File(fileName)).createNewFile();
-                } catch (IOException ex1) {
-                    ex1.printStackTrace();
+                int option = JOptionPane.showConfirmDialog(contentArea, "File not found. Create a new file?");
+                if (option == JOptionPane.YES_OPTION)
+                {
+                    try {
+                        (new File(fileName)).createNewFile();
+                    } catch (IOException ex1) {
+                        JOptionPane.showMessageDialog(contentArea, ex1.getMessage());
+                    }
                 }
                 content = "";
             } catch (Exception ex)
             {
                 content = "";
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(contentArea, ex.getMessage());
             }
             contentArea.setText(content);
         }
@@ -91,17 +96,9 @@ class TextComponentFrame extends JFrame
                 writer = new BufferedWriter(new FileWriter(fileName));
                 writer.write(contentArea.getText());
                 writer.close();
-            } catch (FileNotFoundException ex)
-            {
-                try {
-                    (new File(fileName)).createNewFile();
-                    writer = new BufferedWriter(new FileWriter(fileName));
-                    writer.close();
-                } catch (IOException ex1) {
-                    ex1.printStackTrace();
-                }
+                JOptionPane.showMessageDialog(contentArea, "Successfully saved!");
             } catch (IOException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(contentArea, ex.getMessage());
             }
         }
     }
