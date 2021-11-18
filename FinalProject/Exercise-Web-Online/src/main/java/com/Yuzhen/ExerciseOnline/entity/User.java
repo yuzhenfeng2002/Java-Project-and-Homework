@@ -1,7 +1,16 @@
 package com.Yuzhen.ExerciseOnline.entity;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class User {
+    @NotBlank(message="邮箱不能为空！")
+    @Email(message="邮箱格式错误！")
     private String email;
+    @NotBlank(message="密码不能为空！")
+    @Length(min=6, max=20, message="密码长度必须为6到20个字符！")
     private String password;
     private String password2;
     private String username;

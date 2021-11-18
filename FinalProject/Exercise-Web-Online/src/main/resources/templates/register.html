@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
-<meta charset="UTF-8">
-<title>注册页面</title>
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<script src="js/jquery.min.js"></script>
-<script src="js/common.js"></script>
-<script type="text/javascript" th:inline="javascript">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Yuzhen">
+
+    <base th:href="@{/}">
+    <title>注册页面</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script th:src="@{js/common.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+    function refreshCode(){
+		document.getElementById("myCode").src = [[@{/validateCode}]] + "?t=" + Math.random();
+	}
 	function checkEmail(){
 		if(checkNull($("#email").val(), "请输入您的邮箱！")){
 			$.ajax(
@@ -25,7 +44,7 @@
 					// 成功响应的结果
 					success : function(obj) // obj响应数据
 					{
-						if(obj == "no"){
+						if(obj == "yes"){
 							$("#isExit").html("<font color=red size=5>×</font>");
 							alert("邮箱已存在！");
 						} else {
@@ -36,7 +55,7 @@
 			        error : function() {
 			            alert("处理异常！");
 			        }
-				}	
+				}
 			);
 		}
 	}
@@ -45,79 +64,101 @@
 			alert("两次密码不一致，请重新输入！");
 			return false;
 		}
-		document.myForm.submit();
 	}
 </script>
-<body>
-	<div class="container">
-	  	<div class="bg-primary"  style="width:70%; height: 60px;padding-top: 1px;">
-	       <h3 align="center">用户注册</h3>
-	    </div>
-		<br><br>
-		<form action="user/register" name="myForm" method="post" th:object="${user}"  class="form-horizontal" role="form" >
-			<div class="form-group has-success">
-				<label class="col-sm-2 col-md-2 control-label">邮箱</label>
-				<div class="col-sm-4 col-md-4">
-					<table style="width:100%">
-						<tr>
-							<td><input type="email" class="form-control"
-									   placeholder="请输入您的邮箱" th:field="*{email}" onblur="checkEmail()"/></td>
-					 		<td>
-					 			<span id="isExit"></span>
-					 		</td>
-						</tr>
-					</table>
-					<span th:errors="*{email}"></span>
-				</div>
-			</div>
+</head>
 
-			<div class="form-group has-success">
-				<label class="col-sm-2 col-md-2 control-label">用户名</label>
-				<div class="col-sm-4 col-md-4">
-					<input type="text" class="form-control"
-						   placeholder="请输入您的用户名" th:field="*{username}"/>
-				</div>
-			</div>
+<body class="bg-gradient-primary">
 
-			<div class="form-group has-success">
-				<label class="col-sm-2 col-md-2 control-label">用户类型</label>
-				<div class="col-sm-4 col-md-4">
-					<input type="radio" class="form-control" id="admin" name="usertype" value=0 th:field="*{usertype}" >
-					<label for="admin">管理员</label>
-				</div>
-				<div class="col-sm-4 col-md-4">
-					<input type="radio" class="form-control" id="student" name="usertype" value=1 th:field="*{usertype}" checked >
-					<label for="student">学生</label>
-				</div>
-				<div class="col-sm-4 col-md-4">
-					<input type="radio" class="form-control" id="teacher" name="usertype" value=2 th:field="*{usertype}" >
-					<label for="teacher">教师</label>
-				</div>
-			</div>
-	
-			<div class="form-group has-success">
-				  <label class="col-sm-2 col-md-2 control-label">密码</label>
-				  <div class="col-sm-4 col-md-4">
-		  				<input type="password" class="form-control" placeholder="请输入您的密码" th:field="*{password}" />
-					 <span th:errors="*{password}"></span>
-				  </div>
-			</div>
-	
-			<div class="form-group has-success">
-				  <label class="col-sm-2 col-md-2 control-label">确认密码</label>
-				  <div class="col-sm-4 col-md-4">
-		  				<input type="password" class="form-control"
-					 placeholder="请再次输入您的密码" th:field="*{password2}"/>
-				  </div>
-			</div>
-	
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="button" onclick="checkPwd()" class="btn btn-success" >注册</button>
-					<button type="reset" class="btn btn-primary" >重置</button>
-				</div>
-			</div>
-		</form>
-	</div>
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">用户注册</h1>
+                                </div>
+
+                                <form class="user" th:action="@{/user/register}" name="myForm" method="post" th:object="${user}"  role="form">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user" aria-describedby="emailHelp"
+                                               placeholder="请输入您的邮箱" th:field="*{email}" onblur="checkEmail()">
+                                        <span class="small" th:errors="*{email}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" placeholder="请输入您的用户名" th:field="*{username}">
+                                        <span class="small" th:errors="*{username}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user" placeholder="请输入您的密码" th:field="*{password}"/>
+                                        <span class="small" th:errors="*{password}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user" aria-describedby="emailHelp"
+                                               placeholder="请再次输入您的密码" th:field="*{password2}" onblur="checkPwd()">
+                                        <span class="small" th:errors="*{password2}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control user-select" th:field="*{usertype}">
+                                            <option value="-1" disabled>请选择您的用户类型</option>
+                                            <option value="0">管理员</option>
+                                            <option value="1" selected>学生</option>
+                                            <option value="2">教师</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td><input type="text" class="form-control form-control-user"
+                                                           placeholder="请输入验证码" th:field="*{validateCode}"/></td>
+                                                <td>
+                                                    <img th:src="@{/validateCode}" id="myCode">
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:refreshCode()">看不清？</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-user btn-block" onclick="checkEmail();checkPwd()">注册</button>
+                                        <div class="text-center">
+                                            <span class="small" th:text="${errorMessage}"></span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="@{vendor/jquery/jquery.min.js}"></script>
+<script src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="@{js/sb-admin-2.min.js}"></script>
+
 </body>
+
 </html>

@@ -28,7 +28,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public String login(@ModelAttribute("user") @Validated User user, BindingResult rs, HttpSession session, Model model) {
-        if(rs.hasErrors()) // 验证失败
+        if (rs.hasErrors()) // 验证失败
         {
             return "login";
         }
@@ -41,12 +41,12 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public String register(@ModelAttribute("user") @Validated User user, BindingResult rs) {
-        if(rs.hasErrors()) // 验证失败
+    public String register(@ModelAttribute("user") @Validated User user, BindingResult rs, HttpSession session, Model model) {
+        if (rs.hasErrors()) // 验证失败
         {
-            return "login";
+            return "register";
         }
-        return userService.register(user);
+        return userService.register(user, session, model);
     }
 
     @RequestMapping("/isUser")

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.Yuzhen.ExerciseOnline.repository.UserRepository">
 	<select id="isUser" parameterType="User" resultType="User">
-		select * from user where email = #{email}
+		select * from user where email = #{email} and usertype = #{usertype}
 	</select>
 	<insert id="register" parameterType="User">
 		insert into user (email, password, username, usertype)  values(#{email}, MD5(#{password}), #{username}, #{usertype})

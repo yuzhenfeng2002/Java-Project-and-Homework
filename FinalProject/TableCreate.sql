@@ -8,3 +8,11 @@ CREATE TABLE `user` (
   `ID` varchar(20),
   PRIMARY KEY (`email`, `usertype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `knowledge`;
+CREATE TABLE `knowledge` (
+  `subject` varchar(20) NOT NULL,
+  `title` varchar(20) NOT NULL,
+  `content` LONGTEXT,
+  PRIMARY KEY (`subject`, `title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
