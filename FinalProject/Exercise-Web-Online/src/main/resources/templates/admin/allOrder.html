@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}">
+<meta charset="UTF-8">
+<title>主页</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+	<!-- 加载header.html -->
+	<div th:include="admin/header"></div>
+	<br><br><br>
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">订单列表</h3>
+			</div>
+			<div class="panel-body">
+				<div class="table table-responsive">
+					<table class="table table-bordered table-hover">
+						<tbody class="text-center">
+							<tr>
+								<th>订单ID</th>
+								<th>用户邮箱</th>
+								<th>订单金额</th>
+								<th>订单状态</th>
+								<th>下单日期</th>
+							</tr>
+							<tr th:each="ao:${allOrders}">
+								<td th:text="${ao.id}"></td>
+								<td th:text="${ao.bemail}"></td>
+								<td th:text="${ao.amount}"></td>
+								<td th:text="(${ao.status} == 1)?'已支付':'未支付'"></td>
+								<td th:text="${ao.orderdate}"></td>
+							</tr>
+							<tr>
+								<td colspan="5" align="right">
+									<ul class="pagination">
+										<li><a>第<span th:text="${currentPage}" ></span>页</a></li>
+										<li><a>共<span th:text="${totalPage}" ></span>页</a></li>
+										<li>
+											<span th:if="${currentPage} != 1" >
+												<a th:href="@{selectOrder?currentPage=${currentPage - 1}}">上一页</a>
+											</span>
+											<span th:if="${currentPage} != ${totalPage}" >
+												<a th:href="@{selectOrder?currentPage=${currentPage - 1}}">下一页</a>
+											</span>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

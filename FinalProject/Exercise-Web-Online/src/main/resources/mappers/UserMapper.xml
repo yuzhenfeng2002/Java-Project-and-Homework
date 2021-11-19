@@ -10,6 +10,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into user (email, password, username, usertype)  values(#{email}, MD5(#{password}), #{username}, #{usertype})
 	</insert>
 	<select id="login" parameterType="User" resultType="User">
-		select * from user where email = #{email} and password = MD5(#{password})
+		select * from user where email = #{email} and password = MD5(#{password}) and usertype = #{usertype}
 	</select>
 </mapper>

@@ -25,12 +25,12 @@ public class UserServiceImpl implements UserService{
         List<User> list = userRepository.login(user);
         if (list.size() > 0) // 登录成功
         {
-            session.setAttribute("user", user);
+            session.setAttribute("user", list.get(0));
             return "redirect:/knowledge/list";
         }
         else // 登录失败
         {
-            model.addAttribute("errorMessage", "用户名或密码错误！");
+            model.addAttribute("errorMessage", "用户名、密码或用户类型错误！");
             return "login";
         }
     }

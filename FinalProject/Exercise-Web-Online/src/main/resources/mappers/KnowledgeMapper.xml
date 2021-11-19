@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.Yuzhen.ExerciseOnline.repository.KnowledgeRepository">
-    <select id="list" parameterType="Knowledge" resultType="Knowledge">
-        select distinct `subject` from knowledge limit 100
+    <select id="list" parameterType="Subject" resultType="Subject">
+        select * from subject limit 100
     </select>
 </mapper>

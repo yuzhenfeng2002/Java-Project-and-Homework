@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<meta charset="UTF-8">
+<title>订单详情页面</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">订单详情</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table table-responsive">
+				<table class="table table-bordered table-hover">
+					<tbody class="text-center">
+						<tr>
+							<th>商品编号</th>
+							<th>商品图片</th>
+							<th>商品名称</th>
+							<th>商品购买价</th>
+							<th>购买数量</th>
+						</tr>
+						<tr th:each="od:${orderDetail}">
+							<td th:text="${od.id}"></td>
+							<td>
+								<a th:href="'goodsDetail?id=' + ${od.id}"> 
+								<img th:src="'images/' + ${od.gpicture}"
+									style="height: 50px; width: 50px; display: block;">
+								</a>
+							</td>
+							<td th:text="${od.gname}"></td>
+							<td th:text="${od.grprice}"></td>
+							<td th:text="${od.shoppingnum}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

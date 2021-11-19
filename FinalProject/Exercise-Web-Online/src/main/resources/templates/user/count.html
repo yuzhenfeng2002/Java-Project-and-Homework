@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<meta charset="UTF-8">
+<title>结算页面</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+<div th:include="user/header"></div>
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">购物车列表</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table table-responsive">
+				<table class="table table-bordered table-hover">
+					<tbody class="text-center">
+						<tr>
+							<th>商品信息</th>
+							<th>单价（元）</th>
+							<th>数量</th>
+							<th>小计</th>
+						</tr>
+						<tr th:each="cart:${cartlist}">
+							<td>
+								<a th:href="'goodsDetail?id=' + ${cart.id}"> 
+								<img th:src="'images/' + ${cart.gpicture}"
+									style="height: 50px; width: 50px; display: block;">
+								</a>
+							</td>
+							<td th:text="${cart.grprice}"></td>
+							<td th:text="${cart.shoppingnum}"></td>
+							<td th:text="${cart.smallsum}"></td>
+						</tr>
+						<tr>
+							<td colspan="4">
+							<font style="color: #a60401; font-size: 13px; font-weight: bold; letter-spacing: 0px;">
+								购物金额总计(不含运费) ￥&nbsp;<span th:text="${total}"></span>元
+							</font>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<a th:href="'cart/submitOrder?amount=' + ${total}" >提交订单</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

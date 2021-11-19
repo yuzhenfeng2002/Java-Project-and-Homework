@@ -22,7 +22,8 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/toLogin")
-    public String toLogin(@ModelAttribute("user") User user) {
+    public String toLogin(@ModelAttribute("user") User user, HttpSession session) {
+        session.removeAttribute("user");
         return "login";
     }
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>导航页</title>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container-fruid">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation"
+			style="padding-left: 30px;">
+			<ul class="nav navbar-nav">
+				<li class="dropdown"><a href="##" data-toggle="dropdown"
+					class="dropdown-toggle">类型管理<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a th:href="@{type/selectAllTypeByPage?currentPage=1}">查询类型</a></li>
+						<li><a th:href="@{type/toAddType}">添加类型</a></li>
+					</ul>
+				</li>
+				<li class="dropdown"><a href="##" data-toggle="dropdown"
+					class="dropdown-toggle">商品管理<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a th:href="@{goods/selectAllGoodsByPage?currentPage=1&act=select}">查询商品</a></li>
+						<li><a th:href="@{goods/toAddGoods}">添加商品</a></li>
+						<li><a th:href="@{goods/selectAllGoodsByPage?currentPage=1&act=updateSelect}">修改商品</a></li>
+						<li><a th:href="@{goods/selectAllGoodsByPage?currentPage=1&act=deleteSelect}">删除商品</a></li>
+					</ul>
+				</li>
+				<li><a th:href="@{selectOrder?currentPage=1}">查询订单</a></li>
+				<li><a th:href="@{selectUser?currentPage=1}">用户管理</a></li>
+				<li><a th:href="@{loginOut}">安全退出</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

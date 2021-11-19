@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>导航页</title>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<style type="text/css">
+     .carousel{
+         height: 200px;
+         background-color: #000;
+      }
+      .carousel .item{
+         height: 200px;
+         background-color: #000;
+      }
+      .carousel img{
+         width: 100%;
+      }
+</style>
+</head>
+<body>
+	<div class="container-fruid">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation"
+			style="padding-left: 30px;">
+			<div class="navbar-header">
+				<span class="navbar-brand">欢迎光临eBusiness</span>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{user/toRegister}">注册</a></li>
+				<li>
+					<a th:href="(${session.bUser} == null)?'user/toLogin':'#'" >
+						<span th:if="${session.bUser} == null" >
+							登录
+						</span>
+						<span th:if="${session.bUser} != null" >
+							欢迎<span th:text="${session.bUser.bemail}" ></span>
+						</span>
+					</a>
+				</li>
+				<li><a th:href="@{admin/toLogin}">后台</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" style="padding-right: 30px;">
+				<li><a href="cart/userInfo">个人信息</a></li>
+				<li><a href="cart/selectCart">我的购物车</a></li>
+				<li><a href="cart/myFocus">我的收藏</a></li>
+				<li><a href="cart/myOder">我的订单</a></li>
+				<li class="dropdown"><a href="##" data-toggle="dropdown"
+					class="dropdown-toggle">关于我们<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="##">联系我们</a></li>
+						<li><a href="##">投诉建议</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!-- ************************************************** -->
+		<div id="carousel-example-generic" class="carousel slide"
+			data-ride="carousel" style="margin-top: 20px;">
+			<!-- Indicators 小圆圈-->
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" 
+				th:each="advertise,adstat:${advertisementGoods}" 
+				th:data-slide-to="${adstat.index}"
+				th:class="(${adstat.index}==0)? 'active' : ''"></li>
+			</ol>
+			<!-- 滚动广告图片 -->
+			<div class="carousel-inner" role="listbox">
+				<div th:each="advertise,adstat:${advertisementGoods}" th:class="(${adstat.index}==0)? 'item active' : 'item'">
+					<img th:src="'images/' + ${advertise.gpicture}" th:alt="${adstat.index + 1}">
+					<div class="carousel-caption"><span th:text="${advertise.gname}"></span></div>
+				</div>
+			</div>
+			<!-- Controls -->
+			<a class="left carousel-control" href="#carousel-example-generic"
+				role="button" data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#carousel-example-generic"
+				role="button" data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+		<!-- *************************************** -->
+		<div class="navbar navbar-default " role="navigation">
+			<ul class="nav navbar-nav" style="padding-left: 50px;">
+				<li><a th:href="@{/}">首页</a></li>
+				<li th:each="gty:${goodsType}"><a th:href="'?tid=' + ${gty.id}"><span th:text="${gty.typename}"></span></a></li>
+			</ul>
+			<form action="search" class="navbar-form navbar-right"
+				style="padding-right: 50px;">
+				<div class="form-group">
+					<input type="text" class="form-control" name="mykey" placeholder="请输入关键词" />
+				</div>
+				<button type="submit" class="btn btn-default">搜索</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

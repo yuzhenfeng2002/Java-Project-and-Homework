@@ -59,6 +59,14 @@
                                         <span th:errors="*{password}"></span>
                                     </div>
                                     <div class="form-group">
+                                        <select class="form-control user-select" th:field="*{usertype}">
+                                            <option value="-1" disabled>请选择您的用户类型</option>
+                                            <option value="0">管理员</option>
+                                            <option value="1" selected>学生</option>
+                                            <option value="2">教师</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <table style="width: 100%">
                                             <tr>
                                                 <td><input type="text" class="form-control form-control-user"

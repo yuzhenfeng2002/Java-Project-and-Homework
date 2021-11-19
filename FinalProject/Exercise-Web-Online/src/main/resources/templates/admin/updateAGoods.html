@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>商品类型添加页面</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<body>
+	<div th:include="admin/header"></div>
+	<br><br><br>
+	<div class="container">
+		<div class="bg-primary"  style="width:70%; height: 60px;padding-top: 0.5px;">
+	       <h3 align="center">修改商品</h3>
+	   </div><br>
+		<form th:action="@{/goods/addGoods?act=update}"
+		 name="myform" method="post" 
+		 th:object="${goods}"  
+		 class="form-horizontal" 
+		 enctype="multipart/form-data" >
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">商品名称</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="text" class="form-control"
+					 placeholder="请输入商品名"
+					th:field="*{gname}"/>
+					<input type="hidden" name="id" id="id" th:value="${goods.id}"/>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">商品原价</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="number" class="form-control"
+					 placeholder="请输入商品原价"
+					th:field="*{goprice}"/>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">商品折扣价</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="number" class="form-control"
+					 placeholder="请输入商品折扣价"
+					th:field="*{grprice}"/>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">商品库存</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="number" class="form-control"
+					 placeholder="请输入商品库存"
+					th:field="*{gstore}"/>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				  <label class="col-sm-2 col-md-2 control-label">商品图片</label>
+				  <div class="col-sm-4 col-md-4">
+		  				<input type="file" placeholder="请选择商品图片"  class="form-control" name="fileName"/>
+		  				<img th:src="'images/' + ${goods.gpicture}"
+									style="height: 50px; width: 50px; display: block;">
+						<input type="hidden" name="gpicture" id="gpicture" th:value="${goods.gpicture}"/>
+				  </div>
+			 </div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">是否推荐</label>
+				<div class="col-sm-4 col-md-4 radio">
+					<label> 
+						<input type="radio" th:field="*{isRecommend}" value="1">是
+					</label>
+					<label> 
+						<input type="radio"  th:field="*{isRecommend}" value="0">否
+					</label>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">是否广告</label>
+				<div class="col-sm-4 col-md-4 radio">
+					<label> 
+						<input type="radio" th:field="*{isAdvertisement}" value="1">是
+					</label>
+					<label> 
+						<input type="radio"    th:field="*{isAdvertisement}"s  value="0">否
+					</label>
+				</div>
+			</div>
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">商品类型</label>
+				<div class="col-sm-4 col-md-4">
+					<select class="form-control" th:field="*{goodstype_id}">
+                        <option th:each="gty:${goodsType}" th:value="${gty.id}" th:text="${gty.typename}">
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit"class="btn btn-success" >修改</button>
+					<button type="reset" class="btn btn-primary" >重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

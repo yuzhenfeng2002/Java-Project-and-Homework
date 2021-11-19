@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}">
+<meta charset="UTF-8">
+<title>商品详情页</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+	<!-- 加载header.html -->
+	<div th:include="admin/header"></div>
+	<br><br><br>
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">商品详情</h3>
+			</div>
+			<div class="panel-body">
+				<div class="table table-responsive">
+					<table class="table table-bordered table-hover">
+						<tbody class="text-center">
+							<tr>
+								<th>商品名称</th>
+								<td th:text="${goods.gname}"></td>
+							</tr>
+							<tr>
+								<th>商品原价</th>
+								<td th:text="${goods.goprice}"></td>
+							</tr>
+							<tr>
+								<th>商品折扣价</th>
+								<td th:text="${goods.grprice}"></td>
+							</tr>
+							<tr>
+								<th>商品库存</th>
+								<td th:text="${goods.gstore}"></td>
+							</tr>
+							<tr>
+								<th>商品图片</th>
+								<td>
+									<img th:src="'images/' + ${goods.gpicture}"
+									style="height: 50px; width: 50px; display: block;">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

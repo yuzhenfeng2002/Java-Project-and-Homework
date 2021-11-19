@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<meta charset="UTF-8">
+<title>用户信息页面</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<body>
+	<div class="container">
+	<div class="bg-primary"  style="width:100%; height: 70px;padding-top: 10px;">
+	       <h2 align="center">用户信息</h2>
+	   </div>
+		<br><br>
+		<form action="cart/updateUpwd" name="myform" method="post" class="form-horizontal" role="form" >
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">邮箱</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="text" class="form-control" readonly="readonly" name="bemail" th:value="${session.bUser.bemail}" />
+				</div>
+			</div>	
+			<div class="form-group has-success">
+				  <label class="col-sm-2 col-md-2 control-label">密码</label>
+				  <div class="col-sm-4 col-md-4">
+		  				<input type="password" class="form-control" name="bpwd" placeholder="请输入您的新密码" />
+				  </div>
+			 </div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit"class="btn btn-success" >修改密码</button>
+					<button type="reset" class="btn btn-primary" >重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

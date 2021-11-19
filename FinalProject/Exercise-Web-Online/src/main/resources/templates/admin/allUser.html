@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}">
+<meta charset="UTF-8">
+<title>主页</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+	function deleteUsers(tid){
+		$.ajax(
+			{
+				//请求路径，要注意的是url和th:inline="javascript"
+				url : [[@{/deleteUser}]],
+				//请求类型
+				type : "post",
+				//data表示发送的数据
+				data : {
+					id : tid
+				},
+				//成功响应的结果
+				success : function(obj){//obj响应数据
+					if(obj == "no"){
+						alert("该用户有关联不允许删除！");
+					}else{
+						if(window.confirm("真的删除该用户吗？")){
+							//获取路径
+							var pathName=window.document.location.pathname;
+							//截取，得到项目名称
+							var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+							window.location.href = projectName + obj;
+						}
+					}
+				},
+		        error : function() {
+		            alert("处理异常！");
+		        }
+			}	
+		);
+	}
+	</script>
+</head>
+<body>
+	<!-- 加载header.html -->
+	<div th:include="admin/header"></div>
+	<br><br><br>
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">商品列表</h3>
+			</div>
+			<div class="panel-body">
+				<div class="table table-responsive">
+					<table class="table table-bordered table-hover">
+						<tbody class="text-center">
+							<tr>
+								<th>用户ID</th>
+								<th>用户邮箱</th>
+								<th>删除</th>
+							</tr>
+							<tr th:each="u:${allUsers}">
+								<td th:text="${u.id}"></td>
+								<td th:text="${u.bemail}"></td>
+								<td>
+									<a th:href="'javascript:deleteUsers('+ ${u.id} +')'" >删除</a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" align="right">
+									<ul class="pagination">
+										<li><a>第<span th:text="${currentPage}" ></span>页</a></li>
+										<li><a>共<span th:text="${totalPage}" ></span>页</a></li>
+										<li>
+											<span th:if="${currentPage} != 1" >
+												<a th:href="@{selectUser?currentPage=${currentPage - 1}}">上一页</a>
+											</span>
+											<span th:if="${currentPage} != ${totalPage}" >
+												<a th:href="@{selectUser?currentPage=${currentPage - 1}}">下一页</a>
+											</span>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

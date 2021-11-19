@@ -20,4 +20,10 @@ public class KnowledgeController extends AuthorityController{
         return knowledgeService.list(session, model);
     }
 
+    @RequestMapping("/subject")
+    public String subjectDetail(HttpSession session, Model model, Integer id)
+    {
+        model.addAttribute("sid", id);
+        return "test";
+    }
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<meta charset="UTF-8">
+<title>登录页面</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<script type="text/javascript" th:inline="javascript">
+	function refreshCode(){
+		document.getElementById("mycode").src = [[@{/validateCode}]] + "?t=" + Math.random();
+	}
+</script>
+<body>
+	<div class="container">
+		<div class="bg-primary"  style="width:70%; height: 60px;padding-top: 1px;">
+	       <h3 align="center">用户登录</h3>
+	   </div>
+		<br><br>
+		<form action="user/login" name="myform" method="post" th:object="${bUser}"  class="form-horizontal" role="form" >
+			<div class="form-group has-success">
+				<label class="col-sm-2 col-md-2 control-label">邮箱</label>
+				<div class="col-sm-4 col-md-4">
+					<input type="email" class="form-control"
+					 placeholder="请输入您的邮箱"
+					th:field="*{bemail}"/>
+					<span th:errors="*{bemail}"></span>
+				</div>
+			</div>
+		
+			<div class="form-group has-success">
+				  <label class="col-sm-2 col-md-2 control-label">密码</label>
+				  <div class="col-sm-4 col-md-4">
+		  				<input type="password" class="form-control"
+					 placeholder="请输入您的密码" th:field="*{bpwd}"/>
+					 <span th:errors="*{bpwd}"></span>
+				  </div>
+			 </div>
+			 
+			 <div class="form-group has-success">
+				  <label class="col-sm-2 col-md-2 control-label">验证码</label>
+				  <div class="col-sm-4 col-md-4">
+				  		<table style="width: 100%">
+				  			<tr>
+				  				<td><input type="text" class="form-control"
+					 placeholder="请输入验证码" th:field="*{code}"/></td>
+					 			<td>
+					 				<img th:src="@{/validateCode}" id="mycode">
+					 			</td>
+					 			<td>
+					 				<a href="javascript:refreshCode()">看不清换一张</a>
+					 			</td>
+				  			</tr>
+				  		</table>
+				  </div>
+			 </div>
+			 
+			 
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit"class="btn btn-success" >登录</button>
+					<button type="reset" class="btn btn-primary" >重置</button>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<font size="6" color="red">
+						<span th:text="${errorMessage }"></span>
+					</font>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

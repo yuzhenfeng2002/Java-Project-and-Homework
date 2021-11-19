@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<base th:href="@{/}"><!-- 不用base就使用th:src="@{/js/jquery.min.js} -->
+<meta charset="UTF-8">
+<title>收藏页面</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+<div th:include="user/header"></div>
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">收藏列表</h3>
+		</div>
+		<div class="panel-body">
+			<div class="table table-responsive">
+				<table class="table table-bordered table-hover">
+					<tbody class="text-center">
+						<tr>
+							<th>商品图片</th>
+							<th>商品名称</th>
+							<th>原价</th>
+							<th>现价</th>
+						</tr>
+						<tr th:each="focus:${myFocus}">
+							<td>
+								<a th:href="'goodsDetail?id=' + ${focus.id}"> 
+								<img th:src="'images/' + ${focus.gpicture}"
+									style="height: 50px; width: 50px; display: block;">
+								</a>
+							</td>
+							<td th:text="${focus.gname}"></td>
+							<td th:text="${focus.goprice}"></td>
+							<td th:text="${focus.grprice}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
