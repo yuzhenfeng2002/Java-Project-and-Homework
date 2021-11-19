@@ -52,7 +52,7 @@ public class UserController {
 
     @RequestMapping("/isUser")
     @ResponseBody
-    public String isUse(@RequestBody User user) {
+    public String isUser(@RequestBody User user) {
         return userService.isUser(user);
     }
 }

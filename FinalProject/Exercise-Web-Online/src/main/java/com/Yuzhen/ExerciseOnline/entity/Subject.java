@@ -1,7 +1,10 @@
 package com.Yuzhen.ExerciseOnline.entity;
 
+import javax.validation.constraints.NotBlank;
+
 public class Subject {
     private int id;
+    @NotBlank
     private String name;
     private String introduction;
 

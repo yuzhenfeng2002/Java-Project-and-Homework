@@ -1,15 +1,26 @@
 package com.Yuzhen.ExerciseOnline.entity;
 
+import javax.validation.constraints.NotBlank;
+
 public class Knowledge {
-    private String subject;
+    private int id;
+    @NotBlank
+    private int subject_id;
+    @NotBlank
     private String title;
     private String content;
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public int getId() {
+        return id;
     }
-    public String getSubject() {
-        return subject;
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getSubject_id() {
+        return subject_id;
+    }
+    public void setSubject_id(int subject_id) {
+        this.subject_id = subject_id;
     }
     public void setTitle(String title) {
         this.title = title;
