@@ -1,5 +1,6 @@
 package com.Yuzhen.ExerciseOnline.service;
 
+import com.Yuzhen.ExerciseOnline.auxiliary.Auxiliary;
 import com.Yuzhen.ExerciseOnline.entity.Knowledge;
 import com.Yuzhen.ExerciseOnline.entity.Subject;
 import com.Yuzhen.ExerciseOnline.entity.User;
@@ -55,8 +56,11 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public String addSubject(Subject subject, HttpSession session, Model model) {
         if (knowledgeRepository.isSubject(subject.getName()).size() > 0) {
             model.addAttribute("errorMessage", "课程已存在，请前往相关课程页面查看！");
+            model.addAttribute("user", (User)session.getAttribute("user"));
+            return "addSubject";
         }
         else {
+            subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
             knowledgeRepository.addSubject(subject);
         }
         return "redirect:/knowledge/list";
@@ -64,12 +68,47 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
     @Override
     public String addKnowledge(Knowledge knowledge, HttpSession session, Model model) {
-        if (knowledgeRepository.isSubject(knowledge.getTitle()).size() > 0) {
+        Subject subject = knowledgeRepository.selectSubjectByName(knowledge.getSubject_name());
+        if (subject == null)
+        {
+            model.addAttribute("errorMessage", "课程不存在，请前往课程页面确认！");
+            model.addAttribute("user", (User)session.getAttribute("user"));
+            return "addKnowledge";
+        }
+        else if (knowledgeRepository.isKnowledge(subject.getId(), knowledge.getTitle()).size() > 0) {
             model.addAttribute("errorMessage", "知识点已存在，请前往相关课程页面查看！");
+            model.addAttribute("user", (User)session.getAttribute("user"));
+            return "addKnowledge";
         }
         else {
+            knowledge.setSubject_id(subject.getId());
+            knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
             knowledgeRepository.addKnowledge(knowledge);
         }
-        return "redirect:/knowledge/list";
+        return ("redirect:/knowledge/subject?id=" + (subject.getId()));
+    }
+
+    @Override
+    public String toModifySubject(Integer id, HttpSession session, Model model) {
+        Subject subject = knowledgeRepository.selectSubject(id);
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
+        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", -1);
+        model.addAttribute("originSubject", subject);
+        return "modifySubject";
+    }
+
+    @Override
+    public String toModifyKnowledge(Integer id, HttpSession session, Model model) {
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(id);
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", id);
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        return "modifyKnowledge";
     }
 }

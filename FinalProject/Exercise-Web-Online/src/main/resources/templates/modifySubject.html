@@ -10,7 +10,7 @@
     <meta name="author" content="Yuzhen">
 
     <base th:href="@{/}">
-    <title>添加课程</title>
+    <title>修改信息</title>
 
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -20,6 +20,8 @@
 
     <!-- Custom styles for this template-->
     <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet">
+    <script type="text/javascript" th:inline="javascript">
+    </script>
 
 </head>
 
@@ -32,7 +34,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/knowledge/list}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -44,9 +46,15 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" th:href="@{/knowledge/list}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>返回主页</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${originSubject.id}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>课程介绍</span></a>
             </li>
 
             <!-- Divider -->
@@ -54,86 +62,14 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                知识清单
             </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
-                </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item active" href="cards.html">Cards</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li th:each="knowledge : ${knowledgeList}" class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'">
+                <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}" >
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                    <span th:text="${knowledge.title}"></span></a>
             </li>
 
             <!-- Divider -->
@@ -243,7 +179,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">添加课程</h1>
+                        <h1 class="h3 mb-0 text-gray-800">修改信息</h1>
                     </div>
 
                     <!-- Content Column -->
@@ -255,7 +191,7 @@
                                 <h6 class="m-0 font-weight-bold text-primary text-center">课程内容</h6>
                             </div>
                             <div class="card-body">
-                                <form class="user" method="post" th:action="@{/knowledge/subject/add}" th:object="${subject}">
+                                <form class="user" method="post" th:action="@{/knowledge/subject/modify} + '?id=' + ${originSubject.id}" th:object="${originSubject}">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="请输入课程名称" th:field="*{name}">
                                         <span th:errors="*{name}"></span>
@@ -274,6 +210,9 @@
                                 </form>
                             </div>
                         </div>
+
+                    </div>
+                    <!-- /.container-fluid -->
 
                 </div>
                 <!-- /.container-fluid -->
@@ -333,9 +272,9 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script th:inline="javascript" th:each="subject : ${subjects}">
-    var id = /*[[${'card-body-' + subject.id}]]*/ 'card-body-0';
-    var content = /*[[${subject.introduction}]]*/ '暂无内容。';
+    <script th:inline="javascript">
+    var id = 'main-body-content';
+    var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
     </script>
 

@@ -9,11 +9,20 @@
     <select id="selectSubject" parameterType="Integer" resultType="Subject">
         select * from subject where id = #{id} limit 1
     </select>
+    <select id="selectSubjectByName" parameterType="String" resultType="Subject">
+        select * from subject where name = #{name} limit 1
+    </select>
     <select id="listKnowledge" parameterType="Integer" resultType="Knowledge">
         select * from knowledge where subject_id = #{id}
     </select>
     <select id="selectKnowledge" parameterType="Integer" resultType="Knowledge">
         select * from knowledge where id = #{id} limit 1
+    </select>
+    <select id="isSubject" parameterType="String" resultType="Subject">
+        select * from subject where name = #{name} limit 1
+    </select>
+    <select id="isKnowledge" resultType="Knowledge">
+        select * from knowledge where subject_id = #{subjectID} and title = #{title} limit 1
     </select>
     <insert id="addSubject" parameterType="Subject">
         insert into subject (name, introduction)  values(#{name}, #{introduction})

@@ -34,7 +34,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/knowledge/list}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -51,6 +51,12 @@
                     <span>返回主页</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>课程介绍</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -60,18 +66,11 @@
             </div>
 
             <!-- Nav Item - Charts -->
-            <div th:each="knowledge : ${knowledgeList}">
-                <li class="nav-item active" th:if="${knowledge.id} == ${currentKnowledgeID}">
-                    <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}" >
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span th:text="${knowledge.title}"></span></a>
-                </li>
-                <li class="nav-item" th:if="${knowledge.id} != ${currentKnowledgeID}">
-                    <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}" >
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span th:text="${knowledge.title}"></span></a>
-                </li>
-            </div>
+            <li th:each="knowledge : ${knowledgeList}" class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'">
+                <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}" >
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span th:text="${knowledge.title}"></span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

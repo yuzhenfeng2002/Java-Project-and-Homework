@@ -75,7 +75,7 @@
                                                     <img th:src="@{/validateCode}" id="myCode">
                                                 </td>
                                                 <td>
-                                                    <a href="javascript:refreshCode()">看不清？</a>
+                                                    <a class="small" href="javascript:refreshCode()">看不清？</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -83,7 +83,7 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-user btn-block" >登录</button>
                                         <div class="text-center">
-                                            <span th:text="${errorMessage}"></span>
+                                            <span class="small" th:text="${errorMessage}"></span>
                                         </div>
                                     </div>
                                 </form>

@@ -1,5 +1,6 @@
 package com.Yuzhen.ExerciseOnline.controller;
 
+import com.Yuzhen.ExerciseOnline.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

@@ -4,8 +4,9 @@ import javax.validation.constraints.NotBlank;
 
 public class Knowledge {
     private int id;
-    @NotBlank
     private int subject_id;
+    @NotBlank
+    private String subject_name;
     @NotBlank
     private String title;
     private String content;
@@ -33,5 +34,11 @@ public class Knowledge {
     }
     public String getContent() {
         return content;
+    }
+    public String getSubject_name() {
+        return subject_name;
+    }
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
     }
 }

@@ -28,3 +28,14 @@ CREATE TABLE `knowledge` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`subject_id`) REFERENCES subject(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `exercise`;
+CREATE TABLE `exercise` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `knowledge_id` INT NOT NULL,
+  `type` INT NOT NULL,
+  `content` TEXT,
+  `answer` TEXT,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`knowledge_id`) REFERENCES knowledge(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

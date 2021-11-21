@@ -10,6 +10,7 @@ import java.util.List;
 public interface KnowledgeRepository {
     public List<Subject> listSubject();
     public Subject selectSubject(Integer id);
+    public Subject selectSubjectByName(String name);
     public List<Knowledge> listKnowledge(Integer id);
     public Knowledge selectKnowledge(Integer id);
     public List<Subject> isSubject(String name);
