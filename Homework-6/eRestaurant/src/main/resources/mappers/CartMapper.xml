@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.eRestaurant.repository.before.CartRepository">
+    <!-- 是否已添加购物车 -->
+    <select id="isPutCart" resultType="map">
+        select * from carttable where goodstable_id=#{gid} and busertable_id=#{uid}
+    </select>
+    <!-- 添加购物车 -->
+    <insert id="putCart">
+        insert into carttable (id, busertable_id, goodstable_id, shoppingnum) values(null, #{uid},#{gid},#{bnum})
+    </insert>
+    <!-- 更新购物车 -->
+    <update id="updateCart">
+        update carttable set shoppingnum=shoppingnum+#{bnum} where busertable_id=#{uid} and goodstable_id=#{gid}
+    </update>
+    <!-- 查询购物车 -->
+    <select id="selectCart" parameterType="Integer" resultType="map">
+        select gt.id, gt.gname, gt.gpicture, gt.grprice, ct.shoppingnum, ct.shoppingnum*gt.grprice smallsum
+        from goodstable gt, carttable ct where gt.id=ct.goodstable_id and ct.busertable_id=#{uid}
+    </select>
+    <!-- 删除购物车 -->
+    <delete id="deleteAgoods">
+        delete from carttable where busertable_id=#{uid} and goodstable_id=#{gid}
+    </delete>
+    <!-- 清空购物车 -->
+    <delete id="clear" parameterType="Integer">
+        delete from carttable where busertable_id=#{uid}
+    </delete>
+    <!-- 添加一个订单，成功后将主键值回填给id（实体类的属性）-->
+    <insert id="addOrder" parameterType="Order" keyProperty="id" useGeneratedKeys="true">
+        insert into orderbasetable (busertable_id, amount, status, orderdate) values (#{busertable_id}, #{amount}, 0,
+        now())
+    </insert>
+    <!-- 生成订单详情 -->
+    <insert id="addOrderDetail">
+        insert into orderdetail (orderbasetable_id, goodstable_id, SHOPPINGNUM) select #{ordersn}, goodstable_id,
+        shoppingnum from carttable where busertable_id = #{uid}
+    </insert>
+    <!-- 查询商品购买量，以便更新库存使用 -->
+    <select id="selectGoodsShop" parameterType="Integer" resultType="map">
+        select shoppingnum gshoppingnum, goodstable_id gid from carttable where busertable_id=#{uid}
+    </select>
+    <!-- 更新商品库存 -->
+    <update id="updateStore" parameterType="map">
+        update goodstable set GSTORE=GSTORE-#{gshoppingnum} where id=#{gid}
+    </update>
+    <!-- 支付订单 -->
+    <update id="pay" parameterType="Integer">
+        update orderbasetable set status=1 where id=#{ordersn}
+    </update>
+    <!-- 完成订单 -->
+    <update id="finish" parameterType="Integer">
+        update orderbasetable set status=2 where id=#{ordersn}
+    </update>
+    <!-- 我的订单 -->
+    <select id="myOrder" resultType="map" parameterType="Integer">
+        select id, amount, busertable_id, status, orderdate from orderbasetable where busertable_id = #{uid} and status != 2
+    </select>
+    <!-- 订单详情 -->
+    <select id="orderDetail" resultType="map" parameterType="Integer">
+        select gt.id, gt.gname, gt.goprice, gt.grprice, gt.gpicture, odt.shoppingnum from goodstable gt, orderdetail odt
+        where odt.orderbasetable_id=#{id} and gt.id=odt.goodstable_id
+    </select>
+</mapper>

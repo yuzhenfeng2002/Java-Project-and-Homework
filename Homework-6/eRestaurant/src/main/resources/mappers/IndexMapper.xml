@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.eRestaurant.repository.before.IndexRepository">
+    <!-- 查询广告商品 -->
+    <select id="selectAdvertisementGoods" resultType="Goods">
+        select
+        gt.*, gy.typename
+        from
+        goodstable gt,goodstype gy
+        where
+        gt.goodstype_id = gy.id
+        and gt.isAdvertisement = 1
+        order by gt.id desc limit 5
+    </select>
+    <!-- 查询商品详情 -->
+    <select id="selectAGoods" resultType="Goods">
+        select
+        gt.*, gy.typename
+        from
+        goodstable gt,goodstype gy
+        where
+        gt.goodstype_id = gy.id
+        and gt.id = #{id}
+    </select>
+    <!-- 查询商品类型 -->
+    <select id="selectGoodsType" resultType="GoodsType">
+        select * from goodstype
+    </select>
+    <!-- 查询推荐商品 -->
+    <select id="selectRecommendGoods" resultType="Goods" parameterType="integer">
+        select
+        gt.*, gy.typename
+        from
+        goodstable gt,goodstype gy
+        where
+        gt.goodstype_id = gy.id
+        and gt.isRecommend = 1
+        <if test="tid != 0">
+            and gy.id = #{tid}
+        </if>
+        order by gt.id desc limit 6
+    </select>
+    <!-- 查询最新商品 -->
+    <select id="selectLastedGoods" resultType="Goods" parameterType="integer">
+        select
+        gt.*, gy.typename
+        from
+        goodstable gt,goodstype gy
+        where
+        gt.goodstype_id = gy.id
+        <if test="tid != 0">
+            and gy.id = #{tid}
+        </if>
+        order by gt.id desc limit 6
+    </select>
+    <!-- 首页搜索 -->
+    <select id="search" resultType="Goods" parameterType="String">
+        select gt.*, gy.typename from goodstable gt,goodstype gy where gt.goodstype_id = gy.id
+        and gt.gname like concat('%',#{mykey},'%')
+    </select>
+</mapper>

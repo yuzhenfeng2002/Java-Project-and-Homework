@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.eRestaurant.repository.admin.GoodsRepository">
+    <select id="selectAllGoods" resultType="integer">
+        select count(*) from goodstable
+    </select>
+    <!-- 分页查询 -->
+    <select id="selectAllGoodsByPage" resultType="Goods">
+        select gt.*,gy.typename
+        from goodstable gt,goodstype gy
+        where gt.goodstype_id = gy.id
+        order by id desc limit #{startIndex}, #{perPageSize}
+    </select>
+    <!-- 添加商品 -->
+    <insert id="addGoods" parameterType="Goods">
+        insert into goodstable (id,gname,goprice,grprice,gstore,gpicture,isRecommend,isAdvertisement,goodstype_id)
+        values (null, #{gname}, #{goprice}, #{grprice}, #{gstore}, #{gpicture},#{isRecommend}, #{isAdvertisement},
+        #{goodstype_id})
+    </insert>
+    <!-- 查询商品类型 -->
+    <select id="selectAllGoodsType" resultType="GoodsType">
+        select * from goodstype
+    </select>
+    <!-- 查询商品详情 -->
+    <select id="selectAGoods" resultType="Goods">
+        select
+        gt.*, gy.typename
+        from
+        goodstable gt,goodstype gy
+        where
+        gt.goodstype_id = gy.id
+        and gt.id = #{id}
+    </select>
+    <!-- 删除单个商品 -->
+    <delete id="deleteAGoods" parameterType="Integer">
+        delete from goodstable where id=#{id}
+    </delete>
+    <!-- 修改一个商品 -->
+    <update id="updateGoods" parameterType="Goods">
+        update goodstable set
+        gname = #{gname},
+        goprice = #{goprice},
+        grprice = #{grprice},
+        gstore = #{gstore},
+        gpicture = #{gpicture},
+        isRecommend = #{isRecommend},
+        isAdvertisement = #{isAdvertisement},
+        goodstype_id = #{goodstype_id}
+        where id = #{id}
+    </update>
+    <select id="selectCartGoods" parameterType="integer" resultType="map">
+        select * from carttable where goodstable_id = #{id}
+    </select>
+    <select id="selectOrderGoods" parameterType="integer" resultType="map">
+        select * from orderdetail where goodstable_id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="@{/}">
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script type="text/javascript" th:inline="javascript">
+	function finish(oid){
+			$.ajax(
+				{
+					//请求路径，要注意的是url和th:inline="javascript"
+					url : [[@{/finish}]],
+					//请求类型
+					type : "post",
+					contentType : "application/json",
+					//data表示发送的数据
+					data : JSON.stringify({
+						id : oid
+					}),
+					//成功响应的结果
+					success : function(obj){//obj响应数据
+						alert("订单完成！");
+						location.reload();
+					},
+			        error : function() {
+			            alert("处理异常！");
+			        }
+				}
+			);
+	}
+    </script>
+</head>
+<body>
+<!-- 加载header.html -->
+<div th:include="admin/header"></div>
+<br><br><br>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">订单列表</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tbody class="text-center">
+                    <tr>
+                        <th>订单ID</th>
+                        <th>桌号</th>
+                        <th>订单金额</th>
+                        <th>订单状态</th>
+                        <th>下单日期</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr th:each="ao:${allOrders}">
+                        <td th:text="${ao.id}"></td>
+                        <td th:text="${ao.desknum}"></td>
+                        <td th:text="${ao.amount}"></td>
+                        <td>
+                            <span th:if="${ao.status} == 0">
+									未支付
+								</span>
+                            <span th:if="${ao.status} == 1">
+									已支付
+								</span>
+                            <span th:if="${ao.status} == 2">
+									已完成
+								</span>
+                        </td>
+                        <td th:text="${ao.orderdate}"></td>
+                        <td>
+                            <a th:href="'cart/orderDetail?id=' + ${ao.id}" target="_blank">查看详情</a>
+                            <a th:href="'javascript:finish(' + ${ao.id} + ')'" th:if="${ao.status} != 2">完成订单</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" align="right">
+                            <ul class="pagination">
+                                <li><a>第<span th:text="${currentPage}"></span>页</a></li>
+                                <li><a>共<span th:text="${totalPage}"></span>页</a></li>
+                                <li>
+											<span th:if="${currentPage} != 1">
+												<a th:href="@{selectOrder?currentPage=${currentPage - 1}}">上一页</a>
+											</span>
+                                    <span th:if="${currentPage} != ${totalPage}">
+												<a th:href="@{selectOrder?currentPage=${currentPage - 1}}">下一页</a>
+											</span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

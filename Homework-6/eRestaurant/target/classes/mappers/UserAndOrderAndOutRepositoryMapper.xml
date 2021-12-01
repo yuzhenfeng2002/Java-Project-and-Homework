@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.eRestaurant.repository.admin.UserAndOrderAndOutRepository">
+	<select id="selectAllUser"  resultType="integer">
+		select count(*) from busertable 
+	</select>
+	<!-- 分页查询 -->
+	<select id="selectUserByPage"  resultType="BUser">
+		select * from busertable limit #{startIndex}, #{perPageSize} 
+	</select>
+	<select id="selectCartUser" resultType="map"  parameterType="int" >
+		select * from carttable where busertable_id = #{id}
+	</select>
+	<select id="selectOrderUser" resultType="map"  parameterType="int">
+		select * from orderbasetable where busertable_id = #{id} order by status
+	</select>
+	<delete id="deleteUser" parameterType="int">
+		delete from busertable where id = #{id}
+	</delete>
+	<select id="selectAllOrder"  resultType="integer">
+		select count(*) from orderbasetable 
+	</select>
+	<!-- 分页查询 -->
+	<select id="selectOrderByPage"  resultType="map">
+		select obt.*, bt.desknum from orderbasetable obt, busertable bt where obt.busertable_id = bt.id  order by status limit #{startIndex}, #{perPageSize}
+	</select>
+	<!-- 完成订单 -->
+	<update id="finish" parameterType="Integer">
+		update orderbasetable set status=2 where id=#{ordersn}
+	</update>
+</mapper>

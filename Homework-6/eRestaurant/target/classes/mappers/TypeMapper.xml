@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.eRestaurant.repository.admin.TypeRepository">
+    <select id="selectAll" resultType="integer">
+        select count(*) from goodstype
+    </select>
+    <!-- 分页查询 -->
+    <select id="selectAllTypeByPage" resultType="GoodsType">
+        select * from goodstype limit #{startIndex}, #{perPageSize}
+    </select>
+    <!-- 删除类型 -->
+    <delete id="deleteType" parameterType="integer">
+        delete from goodstype where id=#{id}
+    </delete>
+    <!-- 查询该类型下是否有商品 -->
+    <select id="selectGoods" parameterType="integer" resultType="Goods">
+        select * from goodstable where goodstype_id = #{goodstype_id}
+    </select>
+    <!-- 添加类型 -->
+    <insert id="addType" parameterType="GoodsType">
+        insert into goodstype (id, typename) values(null, #{typename})
+    </insert>
+</mapper>
