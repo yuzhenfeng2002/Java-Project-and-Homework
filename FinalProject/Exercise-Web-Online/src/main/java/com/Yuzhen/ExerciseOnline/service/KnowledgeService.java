@@ -15,4 +15,6 @@ public interface KnowledgeService {
     public String addKnowledge(Knowledge knowledge, HttpSession session, Model model);
     public String toModifySubject(Integer id, HttpSession session, Model model);
     public String toModifyKnowledge(Integer id, HttpSession session, Model model);
+    public String modifySubject(Subject subject, HttpSession session, Model model);
+    public String modifyKnowledge(Knowledge knowledge, HttpSession session, Model model);
 }

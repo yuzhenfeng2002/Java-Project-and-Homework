@@ -57,6 +57,18 @@
                     <span>课程介绍</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>修改课程</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/detail/toModify} + '?id=' + ${currentKnowledgeID}" th:if="${currentKnowledgeID} != -1">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>修改知识</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 

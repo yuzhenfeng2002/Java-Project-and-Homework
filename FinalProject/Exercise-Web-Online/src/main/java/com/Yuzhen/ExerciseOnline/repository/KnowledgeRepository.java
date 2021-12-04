@@ -17,4 +17,6 @@ public interface KnowledgeRepository {
     public List<Subject> isKnowledge(Integer subjectID, String title);
     public int addSubject(Subject subject);
     public int addKnowledge(Knowledge knowledge);
+    public int modifySubject(Subject subject);
+    public int modifyKnowledge(Knowledge knowledge);
 }

@@ -113,6 +113,34 @@ public class KnowledgeController extends AuthorityController{
         return knowledgeService.addKnowledge(knowledge, session, model);
     }
 
+    @RequestMapping("/subject/modify")
+    public String modifySubject(@ModelAttribute("originSubject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model)
+    {
+        User user = (User)session.getAttribute("user");
+        if (user.getUsertype() == 1)
+        {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        if (rs.hasErrors()) // 验证失败
+        {
+            return this.toModifySubject(subject.getId(), session, model);
+        }
+        return knowledgeService.modifySubject(subject, session, model);
+    }
+
+    @RequestMapping("/detail/modify")
+    public String modifyKnowledge(@ModelAttribute("originKnowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model)
+    {
+        User user = (User)session.getAttribute("user");
+        if (user.getUsertype() == 1)
+        {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return knowledgeService.modifyKnowledge(knowledge, session, model);
+    }
+
     @RequestMapping("/detail")
     public String knowledgeDetail(HttpSession session, Model model, Integer id)
     {

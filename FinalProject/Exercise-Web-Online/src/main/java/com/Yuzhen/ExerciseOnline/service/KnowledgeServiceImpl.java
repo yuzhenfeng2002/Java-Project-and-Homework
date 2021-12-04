@@ -20,6 +20,9 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     @Override
     public String listSubject(HttpSession session, Model model) {
         List<Subject> subjects = knowledgeRepository.listSubject();
+        for (Subject subject: subjects) {
+            subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
+        }
         model.addAttribute("user", ((User)session.getAttribute("user")));
         model.addAttribute("subjects", subjects);
         return "index";
@@ -34,7 +37,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", -1);
         model.addAttribute("currentTitle", subject.getName());
-        model.addAttribute("content", subject.getIntroduction());
+        model.addAttribute("content", Auxiliary.modifyContent(subject.getIntroduction()));
         return "knowledge";
     }
 
@@ -48,7 +51,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", id);
         model.addAttribute("currentTitle", knowledge.getTitle());
-        model.addAttribute("content", knowledge.getContent());
+        model.addAttribute("content", Auxiliary.modifyContent(knowledge.getContent()));
         return "knowledge";
     }
 
@@ -60,7 +63,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             return "addSubject";
         }
         else {
-            subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
+            // subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
             knowledgeRepository.addSubject(subject);
         }
         return "redirect:/knowledge/list";
@@ -82,7 +85,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         }
         else {
             knowledge.setSubject_id(subject.getId());
-            knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
+            // knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
             knowledgeRepository.addKnowledge(knowledge);
         }
         return ("redirect:/knowledge/subject?id=" + (subject.getId()));
@@ -110,5 +113,19 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         return "modifyKnowledge";
+    }
+
+    @Override
+    public String modifySubject(Subject subject, HttpSession session, Model model) {
+        // subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
+        knowledgeRepository.modifySubject(subject);
+        return ("redirect:/knowledge/subject?id=" + (subject.getId()));
+    }
+
+    @Override
+    public String modifyKnowledge(Knowledge knowledge, HttpSession session, Model model) {
+        Knowledge originKnowledge = knowledgeRepository.selectKnowledge(knowledge.getId());
+        knowledgeRepository.modifyKnowledge(knowledge);
+        return ("redirect:/knowledge/detail?id=" + (knowledge.getId()));
     }
 }

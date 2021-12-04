@@ -191,7 +191,7 @@
                                 <h6 class="m-0 font-weight-bold text-primary text-center">知识内容</h6>
                             </div>
                             <div class="card-body">
-                                <form class="user" method="post" th:action="@{/knowledge/detail/modify} + '?id=' + @{originKnowledge}" th:object="${originKnowledge}">
+                                <form class="user" method="post" th:action="@{/knowledge/detail/modify} + '?id=' + ${originKnowledge.id}" th:object="${originKnowledge}">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="请输入课程名称" th:value="${originSubject.name}" disabled>
                                         <span th:errors="*{subject_name}"></span>
