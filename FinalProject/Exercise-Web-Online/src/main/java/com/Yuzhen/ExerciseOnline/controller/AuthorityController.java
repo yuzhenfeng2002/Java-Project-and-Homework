@@ -15,7 +15,7 @@ public class AuthorityController {
      */
     @ModelAttribute
     public void isLogin(HttpSession session) throws NoLoginException {
-        if (session.getAttribute("user") == null){
+        if (session.getAttribute("user") == null) {
             throw new NoLoginException("用户未登录！");
         }
     }

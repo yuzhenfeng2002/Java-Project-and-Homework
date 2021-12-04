@@ -17,13 +17,14 @@ import java.util.Objects;
 public class KnowledgeServiceImpl implements KnowledgeService {
     @Autowired
     private KnowledgeRepository knowledgeRepository;
+
     @Override
     public String listSubject(HttpSession session, Model model) {
         List<Subject> subjects = knowledgeRepository.listSubject();
-        for (Subject subject: subjects) {
+        for (Subject subject : subjects) {
             subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
         }
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("subjects", subjects);
         return "index";
     }
@@ -32,7 +33,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public String listKnowledge(HttpSession session, Model model, Integer id) {
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("subject", subject);
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", -1);
@@ -46,7 +47,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Knowledge knowledge = knowledgeRepository.selectKnowledge(id);
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("subject", subject);
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", id);
@@ -59,10 +60,9 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public String addSubject(Subject subject, HttpSession session, Model model) {
         if (knowledgeRepository.isSubject(subject.getName()).size() > 0) {
             model.addAttribute("errorMessage", "课程已存在，请前往相关课程页面查看！");
-            model.addAttribute("user", (User)session.getAttribute("user"));
+            model.addAttribute("user", (User) session.getAttribute("user"));
             return "addSubject";
-        }
-        else {
+        } else {
             // subject.setIntroduction(Auxiliary.modifyContent(subject.getIntroduction()));
             knowledgeRepository.addSubject(subject);
         }
@@ -72,18 +72,15 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     @Override
     public String addKnowledge(Knowledge knowledge, HttpSession session, Model model) {
         Subject subject = knowledgeRepository.selectSubjectByName(knowledge.getSubject_name());
-        if (subject == null)
-        {
+        if (subject == null) {
             model.addAttribute("errorMessage", "课程不存在，请前往课程页面确认！");
-            model.addAttribute("user", (User)session.getAttribute("user"));
+            model.addAttribute("user", (User) session.getAttribute("user"));
             return "addKnowledge";
-        }
-        else if (knowledgeRepository.isKnowledge(subject.getId(), knowledge.getTitle()).size() > 0) {
+        } else if (knowledgeRepository.isKnowledge(subject.getId(), knowledge.getTitle()).size() > 0) {
             model.addAttribute("errorMessage", "知识点已存在，请前往相关课程页面查看！");
-            model.addAttribute("user", (User)session.getAttribute("user"));
+            model.addAttribute("user", (User) session.getAttribute("user"));
             return "addKnowledge";
-        }
-        else {
+        } else {
             knowledge.setSubject_id(subject.getId());
             // knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
             knowledgeRepository.addKnowledge(knowledge);
@@ -95,7 +92,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public String toModifySubject(Integer id, HttpSession session, Model model) {
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", -1);
         model.addAttribute("originSubject", subject);
@@ -107,7 +104,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Knowledge knowledge = knowledgeRepository.selectKnowledge(id);
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", id);
         model.addAttribute("originKnowledge", knowledge);

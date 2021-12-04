@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface UserRepository {
     public List<User> login(User user);
+
     public int register(User user);
+
     public List<User> isUser(User user);
 }

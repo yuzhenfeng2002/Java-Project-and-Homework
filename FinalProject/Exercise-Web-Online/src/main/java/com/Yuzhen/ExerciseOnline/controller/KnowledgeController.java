@@ -17,27 +17,24 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/knowledge")
-public class KnowledgeController extends AuthorityController{
+public class KnowledgeController extends AuthorityController {
     @Autowired
     private KnowledgeService knowledgeService;
 
     @RequestMapping("/list")
-    public String knowledgeList(HttpSession session, Model model)
-    {
+    public String knowledgeList(HttpSession session, Model model) {
         return knowledgeService.listSubject(session, model);
     }
 
     @RequestMapping("/subject")
-    public String subjectDetail(HttpSession session, Model model, Integer id)
-    {
+    public String subjectDetail(HttpSession session, Model model, Integer id) {
         return knowledgeService.listKnowledge(session, model, id);
     }
 
     @RequestMapping("/subject/toAdd")
     public String toAddSubject(@ModelAttribute("subject") Subject subject, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -47,9 +44,8 @@ public class KnowledgeController extends AuthorityController{
 
     @RequestMapping("/detail/toAdd")
     public String toAddKnowledge(@ModelAttribute("knowledge") Knowledge knowledge, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -59,9 +55,8 @@ public class KnowledgeController extends AuthorityController{
 
     @RequestMapping("/subject/toModify")
     public String toModifySubject(Integer id, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -71,9 +66,8 @@ public class KnowledgeController extends AuthorityController{
 
     @RequestMapping("/detail/toModify")
     public String toModifyKnowledge(Integer id, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -82,11 +76,9 @@ public class KnowledgeController extends AuthorityController{
     }
 
     @RequestMapping("/subject/add")
-    public String addSubject(@ModelAttribute("subject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String addSubject(@ModelAttribute("subject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -98,11 +90,9 @@ public class KnowledgeController extends AuthorityController{
     }
 
     @RequestMapping("/detail/add")
-    public String addKnowledge(@ModelAttribute("knowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String addKnowledge(@ModelAttribute("knowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -114,11 +104,9 @@ public class KnowledgeController extends AuthorityController{
     }
 
     @RequestMapping("/subject/modify")
-    public String modifySubject(@ModelAttribute("originSubject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String modifySubject(@ModelAttribute("originSubject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -130,11 +118,9 @@ public class KnowledgeController extends AuthorityController{
     }
 
     @RequestMapping("/detail/modify")
-    public String modifyKnowledge(@ModelAttribute("originKnowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String modifyKnowledge(@ModelAttribute("originKnowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -142,8 +128,7 @@ public class KnowledgeController extends AuthorityController{
     }
 
     @RequestMapping("/detail")
-    public String knowledgeDetail(HttpSession session, Model model, Integer id)
-    {
+    public String knowledgeDetail(HttpSession session, Model model, Integer id) {
         return knowledgeService.showKnowledgeDetail(session, model, id);
     }
 }

@@ -18,15 +18,14 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/exercise")
-public class ExerciseController extends AuthorityController{
+public class ExerciseController extends AuthorityController {
     @Autowired
     private ExerciseService exerciseService;
 
     @RequestMapping("/toAdd")
     public String toAddExercise(@ModelAttribute("exercise") Exercise exercise, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -35,11 +34,9 @@ public class ExerciseController extends AuthorityController{
     }
 
     @RequestMapping("/add")
-    public String addExercise(@ModelAttribute("exercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String addExercise(@ModelAttribute("exercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -51,22 +48,19 @@ public class ExerciseController extends AuthorityController{
     }
 
     @RequestMapping("/subject")
-    public String subjectDetail(HttpSession session, Model model, Integer id)
-    {
+    public String subjectDetail(HttpSession session, Model model, Integer id) {
         return exerciseService.listKnowledge(session, model, id);
     }
 
     @RequestMapping("/list")
-    public String exerciseList(HttpSession session, Model model, Integer id)
-    {
+    public String exerciseList(HttpSession session, Model model, Integer id) {
         return exerciseService.showExerciseList(session, model, id);
     }
 
     @RequestMapping("/toModify")
     public String toModifyExercise(Integer id, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
@@ -75,118 +69,12 @@ public class ExerciseController extends AuthorityController{
     }
 
     @RequestMapping("/modify")
-    public String modifyExercise(@ModelAttribute("originExercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
+    public String modifyExercise(@ModelAttribute("originExercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
         return exerciseService.modifyExercise(exercise, session, model);
     }
-
-    /*
-    @RequestMapping("/list")
-    public String knowledgeList(HttpSession session, Model model)
-    {
-        return knowledgeService.listSubject(session, model);
-    }
-
-    @RequestMapping("/subject")
-    public String subjectDetail(HttpSession session, Model model, Integer id)
-    {
-        return knowledgeService.listKnowledge(session, model, id);
-    }
-
-    @RequestMapping("/subject/toModify")
-    public String toModifySubject(Integer id, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        model.addAttribute("user", user);
-        return knowledgeService.toModifySubject(id, session, model);
-    }
-
-    @RequestMapping("/detail/toModify")
-    public String toModifyKnowledge(Integer id, HttpSession session, Model model) {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        model.addAttribute("user", user);
-        return knowledgeService.toModifyKnowledge(id, session, model);
-    }
-
-    @RequestMapping("/subject/add")
-    public String addSubject(@ModelAttribute("subject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        if (rs.hasErrors()) // 验证失败
-        {
-            return "addSubject";
-        }
-        return knowledgeService.addSubject(subject, session, model);
-    }
-
-    @RequestMapping("/detail/add")
-    public String addKnowledge(@ModelAttribute("knowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        if (rs.hasErrors()) // 验证失败
-        {
-            return "addKnowledge";
-        }
-        return knowledgeService.addKnowledge(knowledge, session, model);
-    }
-
-    @RequestMapping("/subject/modify")
-    public String modifySubject(@ModelAttribute("originSubject") @Validated Subject subject, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        if (rs.hasErrors()) // 验证失败
-        {
-            return this.toModifySubject(subject.getId(), session, model);
-        }
-        return knowledgeService.modifySubject(subject, session, model);
-    }
-
-    @RequestMapping("/detail/modify")
-    public String modifyKnowledge(@ModelAttribute("originKnowledge") @Validated Knowledge knowledge, BindingResult rs, HttpSession session, Model model)
-    {
-        User user = (User)session.getAttribute("user");
-        if (user.getUsertype() == 1)
-        {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        return knowledgeService.modifyKnowledge(knowledge, session, model);
-    }
-
-    @RequestMapping("/detail")
-    public String knowledgeDetail(HttpSession session, Model model, Integer id)
-    {
-        return knowledgeService.showKnowledgeDetail(session, model, id);
-    }
-    */
 }

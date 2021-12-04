@@ -9,12 +9,20 @@ import javax.servlet.http.HttpSession;
 
 public interface KnowledgeService {
     public String listSubject(HttpSession session, Model model);
+
     public String listKnowledge(HttpSession session, Model model, Integer id);
+
     public String showKnowledgeDetail(HttpSession session, Model model, Integer id);
+
     public String addSubject(Subject subject, HttpSession session, Model model);
+
     public String addKnowledge(Knowledge knowledge, HttpSession session, Model model);
+
     public String toModifySubject(Integer id, HttpSession session, Model model);
+
     public String toModifyKnowledge(Integer id, HttpSession session, Model model);
+
     public String modifySubject(Subject subject, HttpSession session, Model model);
+
     public String modifyKnowledge(Knowledge knowledge, HttpSession session, Model model);
 }

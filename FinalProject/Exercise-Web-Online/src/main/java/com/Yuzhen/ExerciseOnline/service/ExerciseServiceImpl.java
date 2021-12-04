@@ -25,7 +25,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public String listKnowledge(HttpSession session, Model model, Integer id) {
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("subject", subject);
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", -1);
@@ -40,7 +40,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
         List<Exercise> exerciseList = exerciseRepository.selectExercise(knowledge_id);
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("subject", subject);
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", knowledge_id);
@@ -52,19 +52,17 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public String addExercise(Exercise exercise, HttpSession session, Model model) {
         Subject subject = knowledgeRepository.selectSubjectByName(exercise.getSubject_name());
-        if (subject == null)
-        {
+        if (subject == null) {
             model.addAttribute("errorMessage", "课程不存在，请前往课程页面确认！");
-            model.addAttribute("user", (User)session.getAttribute("user"));
+            model.addAttribute("user", (User) session.getAttribute("user"));
             return "addExercise";
         }
         Knowledge knowledge = knowledgeRepository.selectKnowledgeByName(subject.getId(), exercise.getKnowledge_name());
         if (knowledge == null) {
             model.addAttribute("errorMessage", "知识点不存在，请前往相关课程页面确认！");
-            model.addAttribute("user", (User)session.getAttribute("user"));
+            model.addAttribute("user", (User) session.getAttribute("user"));
             return "addExercise";
-        }
-        else {
+        } else {
             exercise.setKnowledge_id(knowledge.getId());
             // knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
             if (exerciseRepository == null)
@@ -80,7 +78,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User)session.getAttribute("user")));
+        model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", id);
         model.addAttribute("originKnowledge", knowledge);

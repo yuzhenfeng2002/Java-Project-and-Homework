@@ -9,15 +9,26 @@ import java.util.List;
 @Mapper
 public interface KnowledgeRepository {
     public List<Subject> listSubject();
+
     public Subject selectSubject(Integer id);
+
     public Subject selectSubjectByName(String name);
+
     public List<Knowledge> listKnowledge(Integer id);
+
     public Knowledge selectKnowledge(Integer id);
+
     public Knowledge selectKnowledgeByName(Integer subject_id, String name);
+
     public List<Subject> isSubject(String name);
+
     public List<Subject> isKnowledge(Integer subjectID, String title);
+
     public int addSubject(Subject subject);
+
     public int addKnowledge(Knowledge knowledge);
+
     public int modifySubject(Subject subject);
+
     public int modifyKnowledge(Knowledge knowledge);
 }

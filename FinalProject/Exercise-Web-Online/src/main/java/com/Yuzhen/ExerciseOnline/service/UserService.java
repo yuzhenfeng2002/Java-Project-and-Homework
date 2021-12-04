@@ -8,6 +8,8 @@ import com.Yuzhen.ExerciseOnline.entity.User;
 
 public interface UserService {
     public String login(User user, HttpSession session, Model model);
+
     public String register(User user, HttpSession session, Model model);
+
     public String isUser(User user);
 }

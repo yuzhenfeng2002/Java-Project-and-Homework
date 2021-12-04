@@ -31,10 +31,10 @@
         select * from knowledge where subject_id = #{subjectID} and title = #{title} limit 1
     </select>
     <insert id="addSubject" parameterType="Subject">
-        insert into subject (name, introduction)  values(#{name}, #{introduction})
+        insert into subject (name, introduction) values(#{name}, #{introduction})
     </insert>
     <insert id="addExercise" parameterType="Exercise">
-        insert into exercise (knowledge_id, answer, content)  values(#{knowledge_id}, #{answer}, #{content})
+        insert into exercise (knowledge_id, answer, content) values(#{knowledge_id}, #{answer}, #{content})
     </insert>
     <update id="modifySubject" parameterType="Subject">
         update subject set name=#{name}, introduction=#{introduction} where id=#{id}
