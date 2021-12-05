@@ -10,7 +10,7 @@
     <meta content="Yuzhen" name="author">
 
     <base th:href="@{/}">
-    <title>修改信息</title>
+    <title>我的作答</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" th:href="@{/vendor/fontawesome-free/css/all.min.css}" type="text/css">
@@ -131,55 +131,38 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">修改信息</h1>
+                    <h1 class="h3 mb-0 text-gray-800">我的作答</h1>
                 </div>
+                <p class="mb-4" th:text="${originExercise.content}"></p>
 
-                <!-- Content Column -->
-                <div class="col-xl-8 col-lg-12 col-md-12 m-auto">
-
-                    <!-- Blog -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 ">
-                            <h6 class="m-0 font-weight-bold text-primary text-center">习题内容</h6>
-                        </div>
-                        <div class="card-body">
-                            <form class="user" method="post"
-                                  th:action="@{/exercise/modify} + '?id=' + ${originExercise.id}"
-                                  th:object="${originExercise}">
-                                <div class="form-group">
-                                    <input class="form-control" disabled placeholder="请输入课程名称"
-                                           th:field="*{subject_name}" type="text">
-                                    <span th:errors="*{subject_name}"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <input class="form-control" disabled placeholder="请输入知识标题"
-                                           th:field="*{knowledge_name}" type="text">
-                                    <span th:errors="*{knowledge_name}"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <textarea class="form-control" placeholder="请输入习题内容" rows="6"
-                                              th:field="*{content}"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <textarea class="form-control" placeholder="请输入习题答案" rows="3"
-                                              th:field="*{answer}"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <input class="btn btn-primary btn-user btn-block" type="submit" value="提交">
-                                    <div class="text-center">
-                                        <span class="small" th:text="${errorMessage}"></span>
-                                    </div>
-                                </div>
-                            </form>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">作答记录</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>答题时间</th>
+                                    <th>答题内容</th>
+                                    <th>答题成绩</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="answer : ${answerList}">
+                                    <td th:text="${answer.create_time}"></td>
+                                    <td th:text="${#strings.abbreviate(answer.answer, 30)}"></td>
+                                    <td th:text="${answer.is_right} == -1? '未批改':${answer.is_right} "></td>
+                                    <td><a href="#">查看详情</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
             <!-- /.container-fluid -->

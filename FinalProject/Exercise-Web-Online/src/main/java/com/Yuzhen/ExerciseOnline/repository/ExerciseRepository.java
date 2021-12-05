@@ -1,35 +1,30 @@
 package com.Yuzhen.ExerciseOnline.repository;
 
-import com.Yuzhen.ExerciseOnline.entity.Exercise;
-import com.Yuzhen.ExerciseOnline.entity.Knowledge;
-import com.Yuzhen.ExerciseOnline.entity.Subject;
+import com.Yuzhen.ExerciseOnline.entity.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ExerciseRepository {
-    public List<Subject> listSubject();
-
-    public Subject selectSubject(Integer id);
-
-    public Subject selectSubjectByName(String name);
-
-    public List<Knowledge> listKnowledge(Integer id);
 
     public Exercise selectExerciseByID(Integer id);
 
     public List<Exercise> selectExercise(Integer knowledge_id);
 
-    public List<Subject> isSubject(String name);
-
-    public List<Subject> isKnowledge(Integer subjectID, String title);
-
-    public int addSubject(Subject subject);
-
     public int addExercise(Exercise exercise);
 
-    public int modifySubject(Subject subject);
-
     public int modifyExercise(Exercise exercise);
+
+    public int recordSolutionHistory(Answer answer);
+
+    public List<Answer> selectAnswerByUser(@Param("email") String email, @Param("id") Integer id);
+
+    public Answer selectAnswerByID(Integer id);
+
+    public List<Answer> selectAnswerByExerciseID(Integer id);
+
+    public int modifyAnswer(Answer answer);
 }

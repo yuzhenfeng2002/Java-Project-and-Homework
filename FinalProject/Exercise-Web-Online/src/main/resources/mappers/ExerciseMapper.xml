@@ -3,43 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.Yuzhen.ExerciseOnline.repository.ExerciseRepository">
-    <select id="listSubject" parameterType="Subject" resultType="Subject">
-        select * from subject limit 100
-    </select>
-    <select id="selectSubject" parameterType="Integer" resultType="Subject">
-        select * from subject where id = #{id} limit 1
-    </select>
-    <select id="selectSubjectByName" parameterType="String" resultType="Subject">
-        select * from subject where name = #{name} limit 1
-    </select>
-    <select id="listKnowledge" parameterType="Integer" resultType="Knowledge">
-        select * from knowledge where subject_id = #{id}
-    </select>
     <select id="selectExerciseByID" parameterType="Integer" resultType="Exercise">
         select * from exercise where id = #{id} limit 1
     </select>
     <select id="selectExercise" parameterType="Integer" resultType="Exercise">
         select * from exercise where knowledge_id = #{knowledge_id}
     </select>
-    <select id="selectKnowledgeByName" resultType="Knowledge">
-        select * from knowledge where subject_id = #{subject_id} and title = #{title} limit 1
-    </select>
-    <select id="isSubject" parameterType="String" resultType="Subject">
-        select * from subject where name = #{name} limit 1
-    </select>
-    <select id="isKnowledge" resultType="Knowledge">
-        select * from knowledge where subject_id = #{subjectID} and title = #{title} limit 1
-    </select>
-    <insert id="addSubject" parameterType="Subject">
-        insert into subject (name, introduction) values(#{name}, #{introduction})
-    </insert>
     <insert id="addExercise" parameterType="Exercise">
         insert into exercise (knowledge_id, answer, content) values(#{knowledge_id}, #{answer}, #{content})
     </insert>
-    <update id="modifySubject" parameterType="Subject">
-        update subject set name=#{name}, introduction=#{introduction} where id=#{id}
-    </update>
     <update id="modifyExercise" parameterType="Exercise">
         update exercise set content=#{content}, answer=#{answer} where id=#{id}
+    </update>
+    <insert id="recordSolutionHistory" parameterType="Answer">
+        insert into answer(user_email, exercise_id, answer) values(#{user_email}, #{exercise_id}, #{answer})
+    </insert>
+    <select id="selectAnswerByUser" resultType="Answer">
+        select * from answer where exercise_id = #{id} and user_email = #{email}
+    </select>
+    <select id="selectAnswerByExerciseID" resultType="Answer">
+        select * from answer where exercise_id = #{id} order by create_time desc
+    </select>
+    <select id="selectAnswerByID" resultType="Answer">
+        select * from answer where id = #{id} limit 1
+    </select>
+    <update id="modifyAnswer" parameterType="Answer">
+        update answer set is_right=#{is_right} where id=#{id}
     </update>
 </mapper>

@@ -1,5 +1,6 @@
 package com.Yuzhen.ExerciseOnline.service;
 
+import com.Yuzhen.ExerciseOnline.entity.Answer;
 import com.Yuzhen.ExerciseOnline.entity.Exercise;
 import com.Yuzhen.ExerciseOnline.entity.Knowledge;
 import com.Yuzhen.ExerciseOnline.entity.Subject;
@@ -17,4 +18,11 @@ public interface ExerciseService {
     public String toModifyExercise(Integer id, HttpSession session, Model model);
 
     public String modifyExercise(Exercise exercise, HttpSession session, Model model);
+
+    public String tryToSolveExercise(Answer answer, HttpSession session, Model model);
+
+    public String answerConclude(Integer id, HttpSession session, Model model);
+    public String reviewConclude(Integer id, HttpSession session, Model model);
+    public String toReviewAnswer(Integer id, HttpSession session, Model model);
+    public String reviewAnswer(Answer answer, HttpSession session, Model model);
 }

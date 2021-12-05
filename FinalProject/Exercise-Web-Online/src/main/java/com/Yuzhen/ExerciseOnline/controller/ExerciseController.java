@@ -1,11 +1,7 @@
 package com.Yuzhen.ExerciseOnline.controller;
 
-import com.Yuzhen.ExerciseOnline.entity.Exercise;
-import com.Yuzhen.ExerciseOnline.entity.Knowledge;
-import com.Yuzhen.ExerciseOnline.entity.Subject;
-import com.Yuzhen.ExerciseOnline.entity.User;
+import com.Yuzhen.ExerciseOnline.entity.*;
 import com.Yuzhen.ExerciseOnline.service.ExerciseService;
-import com.Yuzhen.ExerciseOnline.service.KnowledgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +50,8 @@ public class ExerciseController extends AuthorityController {
 
     @RequestMapping("/list")
     public String exerciseList(HttpSession session, Model model, Integer id) {
+        Answer answer = new Answer();
+        model.addAttribute("myAnswer", answer);
         return exerciseService.showExerciseList(session, model, id);
     }
 
@@ -76,5 +74,58 @@ public class ExerciseController extends AuthorityController {
             return "errorPage";
         }
         return exerciseService.modifyExercise(exercise, session, model);
+    }
+
+    @RequestMapping("/tryToSolve")
+    public String tryToSolveExercise(@ModelAttribute("myAnswer") @Validated Answer answer, BindingResult rs, HttpSession session, Model model, Integer id) {
+        User user = (User) session.getAttribute("user");
+        answer.setExercise_id(id);
+        answer.setUser_email(user.getEmail());
+        return exerciseService.tryToSolveExercise(answer, session, model);
+    }
+
+    @RequestMapping("/answerConclude")
+    public String answerConclude(HttpSession session, Model model, Integer id) {
+        return exerciseService.answerConclude(id, session, model);
+    }
+
+    @RequestMapping("/reviewConclude")
+    public String reviewPage(HttpSession session, Model model, Integer id) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return exerciseService.reviewConclude(id, session, model);
+    }
+
+    @RequestMapping("/reviewDetail")
+    public String reviewDetail(HttpSession session, Model model, Integer id) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return exerciseService.toReviewAnswer(id, session, model);
+    }
+
+    @RequestMapping("/toReview")
+    public String toReview(HttpSession session, Model model, Integer id) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return exerciseService.toReviewAnswer(id, session, model);
+    }
+
+    @RequestMapping("/review")
+    public String review(@ModelAttribute("originAnswer") @Validated Answer answer, BindingResult rs, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return exerciseService.reviewAnswer(answer, session, model);
     }
 }

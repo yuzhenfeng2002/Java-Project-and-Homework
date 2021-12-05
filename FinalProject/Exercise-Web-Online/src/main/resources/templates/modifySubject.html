@@ -34,7 +34,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/knowledge/list}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/index}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -44,17 +44,30 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
+        <!-- Nav Item -->
         <li class="nav-item">
             <a class="nav-link" th:href="@{/knowledge/list}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>返回主页</span></a>
+                <span>课程列表</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${originSubject.id}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>课程介绍</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>修改课程</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{knowledge/detail/toModify} + '?id=' + ${currentKnowledgeID}"
+               th:if="${currentKnowledgeID} != -1">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>修改知识</span></a>
         </li>
 
         <!-- Divider -->
@@ -65,7 +78,7 @@
             知识清单
         </div>
 
-        <!-- Nav Item - Charts -->
+        <!-- Nav Item -->
         <li class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'"
             th:each="knowledge : ${knowledgeList}">
             <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}">
@@ -98,50 +111,13 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control bg-light border-0 small"
-                               placeholder="搜索课程" type="text">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                           href="#" id="searchDropdown" role="button">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div aria-labelledby="searchDropdown"
-                             class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input aria-describedby="basic-addon2" aria-label="Search"
-                                           class="form-control bg-light border-0 small" placeholder="搜索课程"
-                                           type="text">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                           data-toggle="dropdown"
                            href="#" id="userDropdown" role="button">
                             <div th:switch="${user.usertype}">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:case="0"
@@ -157,15 +133,6 @@
                         <!-- Dropdown - User Information -->
                         <div aria-labelledby="userDropdown"
                              class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                个人信息
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                基本设置
-                            </a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" data-target="#logoutModal" data-toggle="modal" href="#">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 退出系统
@@ -283,6 +250,7 @@
     var id = 'main-body-content';
     var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
+
 
 </script>
 

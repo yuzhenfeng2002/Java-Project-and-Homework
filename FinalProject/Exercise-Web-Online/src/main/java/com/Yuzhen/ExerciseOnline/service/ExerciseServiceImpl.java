@@ -1,10 +1,7 @@
 package com.Yuzhen.ExerciseOnline.service;
 
 import com.Yuzhen.ExerciseOnline.auxiliary.Auxiliary;
-import com.Yuzhen.ExerciseOnline.entity.Exercise;
-import com.Yuzhen.ExerciseOnline.entity.Knowledge;
-import com.Yuzhen.ExerciseOnline.entity.Subject;
-import com.Yuzhen.ExerciseOnline.entity.User;
+import com.Yuzhen.ExerciseOnline.entity.*;
 import com.Yuzhen.ExerciseOnline.repository.ExerciseRepository;
 import com.Yuzhen.ExerciseOnline.repository.KnowledgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExerciseServiceImpl implements ExerciseService {
@@ -93,6 +92,78 @@ public class ExerciseServiceImpl implements ExerciseService {
     public String modifyExercise(Exercise exercise, HttpSession session, Model model) {
         Exercise originExercise = exerciseRepository.selectExerciseByID(exercise.getId());
         exerciseRepository.modifyExercise(exercise);
-        return ("redirect:/exercise/list?id=" + (exercise.getId()));
+        return ("redirect:/exercise/list?id=" + (exercise.getKnowledge_id()));
+    }
+
+    @Override
+    public String tryToSolveExercise(Answer answer, HttpSession session, Model model) {
+        exerciseRepository.recordSolutionHistory(answer);
+        Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
+        return ("redirect:/exercise/list?id=" + (exercise.getKnowledge_id()));
+    }
+
+    @Override
+    public String answerConclude(Integer id, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        List<Answer> answerList = exerciseRepository.selectAnswerByUser(user.getEmail(), id);
+        Exercise exercise = exerciseRepository.selectExerciseByID(id);
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", id);
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        exercise.setSubject_name(subject.getName());
+        exercise.setKnowledge_name(knowledge.getTitle());
+        model.addAttribute("originExercise", exercise);
+        model.addAttribute("answerList", answerList);
+        return "answerConclude";
+    }
+
+    @Override
+    public String reviewConclude(Integer id, HttpSession session, Model model) {
+        List<Answer> answerList = exerciseRepository.selectAnswerByExerciseID(id);
+        Exercise exercise = exerciseRepository.selectExerciseByID(id);
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", id);
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        exercise.setSubject_name(subject.getName());
+        exercise.setKnowledge_name(knowledge.getTitle());
+        model.addAttribute("originExercise", exercise);
+        model.addAttribute("answerList", answerList);
+        return "reviewConclude";
+    }
+
+    public String toReviewAnswer(Integer id, HttpSession session, Model model)
+    {
+        Answer answer = exerciseRepository.selectAnswerByID(id);
+        Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", id);
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        exercise.setSubject_name(subject.getName());
+        exercise.setKnowledge_name(knowledge.getTitle());
+        model.addAttribute("originExercise", exercise);
+        answer.setIs_right(0);
+        model.addAttribute("originAnswer", answer);
+        return "reviewDetail";
+    }
+
+    @Override
+    public String reviewAnswer(Answer answer, HttpSession session, Model model) {
+        exerciseRepository.modifyAnswer(answer);
+        return ("redirect:/exercise/reviewConclude?id=" + (exerciseRepository.selectAnswerByID(answer.getId()).getExercise_id()));
     }
 }

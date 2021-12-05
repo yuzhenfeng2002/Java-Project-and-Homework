@@ -32,7 +32,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{index}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -42,11 +42,11 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
+        <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>我的主页</span></a>
         </li>
 
         <!-- Divider -->
@@ -54,43 +54,14 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Interface
+            用户功能
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
-            <a aria-controls="collapseTwo" aria-expanded="true" class="nav-link" data-target="#collapseTwo" data-toggle="collapse"
-               href="#">
+        <!-- Nav Item -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/knowledge/list}">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Components</span>
-            </a>
-            <div aria-labelledby="headingTwo" class="collapse show" data-parent="#accordionSidebar"
-                 id="collapseTwo">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="buttons.html">Buttons</a>
-                    <a class="collapse-item active" href="cards.html">Cards</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a aria-controls="collapseUtilities" aria-expanded="true" class="nav-link collapsed" data-target="#collapseUtilities"
-               data-toggle="collapse" href="#">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Utilities</span>
-            </a>
-            <div aria-labelledby="headingUtilities" class="collapse" data-parent="#accordionSidebar"
-                 id="collapseUtilities">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
-                </div>
-            </div>
+                <span>课程列表</span></a>
         </li>
 
         <!-- Divider -->
@@ -98,42 +69,26 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Addons
+            管理员功能
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item -->
         <li class="nav-item">
-            <a aria-controls="collapsePages" aria-expanded="true" class="nav-link collapsed" data-target="#collapsePages"
-               data-toggle="collapse" href="#">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Pages</span>
-            </a>
-            <div aria-labelledby="headingPages" class="collapse" data-parent="#accordionSidebar" id="collapsePages">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
-                    <a class="collapse-item" href="register.html">Register</a>
-                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                    <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="404.html">404 Page</a>
-                    <a class="collapse-item" href="blank.html">Blank Page</a>
-                </div>
-            </div>
+            <a class="nav-link" th:href="@{/knowledge/subject/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加课程</span></a>
         </li>
 
-        <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Charts</span></a>
+            <a class="nav-link" th:href="@{/knowledge/detail/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加知识</span></a>
         </li>
 
-        <!-- Nav Item - Tables -->
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/exercise/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加习题</span></a>
         </li>
 
         <!-- Divider -->
@@ -161,50 +116,14 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control bg-light border-0 small"
-                               placeholder="搜索课程" type="text">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                           href="#" id="searchDropdown" role="button">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div aria-labelledby="searchDropdown"
-                             class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input aria-describedby="basic-addon2" aria-label="Search"
-                                           class="form-control bg-light border-0 small" placeholder="搜索课程"
-                                           type="text">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                           data-toggle="dropdown"
                            href="#" id="userDropdown" role="button">
                             <div th:switch="${user.usertype}">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:case="0"
@@ -220,15 +139,6 @@
                         <!-- Dropdown - User Information -->
                         <div aria-labelledby="userDropdown"
                              class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                个人信息
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                基本设置
-                            </a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" data-target="#logoutModal" data-toggle="modal" href="#">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 退出系统
@@ -347,8 +257,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 </body>
 

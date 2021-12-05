@@ -66,6 +66,7 @@
 		}
 	}
 
+
     </script>
 </head>
 
@@ -98,7 +99,8 @@
                                         <span class="small" th:errors="*{email}"></span>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control form-control-user" placeholder="请输入您的用户名" th:field="*{username}"
+                                        <input class="form-control form-control-user" placeholder="请输入您的用户名"
+                                               th:field="*{username}"
                                                type="text">
                                         <span class="small" th:errors="*{username}"></span>
                                     </div>
@@ -136,7 +138,8 @@
                                         </table>
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-user btn-block" onclick="checkEmail();checkPwd()"
+                                        <button class="btn btn-primary btn-user btn-block"
+                                                onclick="checkEmail();checkPwd()"
                                                 type="submit">注册
                                         </button>
                                         <div class="text-center">
