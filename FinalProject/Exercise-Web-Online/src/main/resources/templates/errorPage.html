@@ -122,20 +122,6 @@
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                           data-toggle="dropdown"
-                           href="#" id="userDropdown" role="button">
-                            <div th:switch="${user.usertype}">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:case="0"
-                                      th:text="${user.username + '，您的身份是管理员'}"></span>
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:case="1"
-                                      th:text="${user.username + '，您的身份是学生'}"></span>
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:case="2"
-                                      th:text="${user.username + '，您的身份是教师'}"></span>
-                            </div>
-                            <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
-                        </a>
                         <!-- Dropdown - User Information -->
                         <div aria-labelledby="userDropdown"
                              class="dropdown-menu dropdown-menu-right shadow animated--grow-in">

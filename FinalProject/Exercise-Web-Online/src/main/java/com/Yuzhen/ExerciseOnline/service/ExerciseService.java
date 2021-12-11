@@ -25,4 +25,6 @@ public interface ExerciseService {
     public String reviewConclude(Integer id, HttpSession session, Model model);
     public String toReviewAnswer(Integer id, HttpSession session, Model model);
     public String reviewAnswer(Answer answer, HttpSession session, Model model);
+
+    String answerDetail(Integer id, HttpSession session, Model model);
 }

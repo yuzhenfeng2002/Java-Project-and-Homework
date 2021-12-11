@@ -133,7 +133,7 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">批改页面</h1>
                 </div>
-                <p class="mb-4" th:text="${originExercise.content}"></p>
+                <p class="mb-4" id="exercise-content"></p>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
@@ -223,8 +223,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:inline="javascript">
-    var id = 'main-body-content';
-    var content = /*[[${content}]]*/ '暂无内容。';
+    var id = 'exercise-content';
+    var content = /*[[${originExercise.content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
 
 

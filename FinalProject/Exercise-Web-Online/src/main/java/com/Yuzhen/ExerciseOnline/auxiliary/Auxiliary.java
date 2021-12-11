@@ -1,5 +1,9 @@
 package com.Yuzhen.ExerciseOnline.auxiliary;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Auxiliary {
     public static String modifyContent(String content) {
         StringBuilder modifiedContent = new StringBuilder();
@@ -30,5 +34,23 @@ public class Auxiliary {
             }
         }
         return modifiedContent.toString();
+    }
+
+    public static Map<String, Object> modifyRatioExercise(String content)
+    {
+        Map<String, Object> result = new HashMap<String, Object>();
+        String findStr = "<opt>";
+        int lastIndex = 0;
+        Integer count = 0;
+        while (lastIndex != -1) {
+            lastIndex = content.indexOf(findStr, lastIndex);
+            if (lastIndex != -1) {
+                count++;
+                lastIndex += findStr.length();
+            }
+        }
+        result.put("opt_num", count);
+        result.put("modified_str", content.replace("<opt>", "- "));
+        return result;
     }
 }

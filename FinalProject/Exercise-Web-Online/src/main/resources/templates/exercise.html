@@ -165,9 +165,23 @@
                         <div class="card-body">
                             <form class="user" method="post"
                                   th:action="@{/exercise/tryToSolve} + '?id=' + ${exercise.id}" th:object="${myAnswer}">
+
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="请输入您的答案" rows="2"
-                                              th:field="*{answer}"></textarea>
+                                    <div th:switch="${exercise.type}">
+                                        <select class="form-control user-select" th:field="*{answer}" th:case="1">
+                                            <option disabled value="-1">请选择您的答案</option>
+                                            <th:block th:each="i: ${#numbers.sequence(0, exercise.optNum - 1)}">
+                                                <option th:value="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}" th:text="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}"></option>
+                                            </th:block>
+                                        </select>
+                                        <select class="form-control user-select" th:field="*{answer}" th:case="2">
+                                            <option disabled value="-1">请选择您的答案</option>
+                                            <option value="0">否</option>
+                                            <option value="1">是</option>
+                                        </select>
+                                        <textarea class="form-control" placeholder="请输入您的答案" rows="2"
+                                                  th:field="*{answer}" th:case="*"></textarea>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -240,6 +254,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:inline="javascript">
+    /*<![CDATA[*/
+
+        /*[# th:each="exercise : ${exercises}"]*/
+            var id = /*[[${'card-body-' + exercise.id}]]*/ 'card-body-0';
+            var content = /*[[${exercise.content}]]*/ '暂无内容。';
+            document.getElementById(id).innerHTML = marked.parse(content);
+        /*[/]*/
+
+    /*]]>*/
+
     var id = 'main-body-content';
     var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);

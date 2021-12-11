@@ -44,6 +44,15 @@ public class ExerciseServiceImpl implements ExerciseService {
         model.addAttribute("knowledgeList", knowledgeList);
         model.addAttribute("currentKnowledgeID", knowledge_id);
         model.addAttribute("currentTitle", knowledge.getTitle());
+        for (Exercise exercise: exerciseList){
+            if (exercise.getType() == 1) {
+                Map<String, Object> result = Auxiliary.modifyRatioExercise(exercise.getContent());
+                String modifiedContent = (String) result.get("modified_str");
+                Integer opt_num = (Integer) result.get("opt_num");
+                exercise.setContent(modifiedContent);
+                exercise.setOptNum(opt_num);
+            }
+        }
         model.addAttribute("exercises", exerciseList);
         return "exercise";
     }
@@ -92,7 +101,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public String modifyExercise(Exercise exercise, HttpSession session, Model model) {
         Exercise originExercise = exerciseRepository.selectExerciseByID(exercise.getId());
         exerciseRepository.modifyExercise(exercise);
-        return ("redirect:/exercise/list?id=" + (exercise.getKnowledge_id()));
+        return ("redirect:/exercise/list?id=" + (originExercise.getKnowledge_id()));
     }
 
     @Override
@@ -117,6 +126,13 @@ public class ExerciseServiceImpl implements ExerciseService {
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
+        if (exercise.getType() == 1) {
+            Map<String, Object> result = Auxiliary.modifyRatioExercise(exercise.getContent());
+            String modifiedContent = (String) result.get("modified_str");
+            Integer opt_num = (Integer) result.get("opt_num");
+            exercise.setContent(modifiedContent);
+            exercise.setOptNum(opt_num);
+        }
         model.addAttribute("originExercise", exercise);
         model.addAttribute("answerList", answerList);
         return "answerConclude";
@@ -136,9 +152,35 @@ public class ExerciseServiceImpl implements ExerciseService {
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
+        if (exercise.getType() == 1) {
+            Map<String, Object> result = Auxiliary.modifyRatioExercise(exercise.getContent());
+            String modifiedContent = (String) result.get("modified_str");
+            Integer opt_num = (Integer) result.get("opt_num");
+            exercise.setContent(modifiedContent);
+            exercise.setOptNum(opt_num);
+        }
         model.addAttribute("originExercise", exercise);
         model.addAttribute("answerList", answerList);
         return "reviewConclude";
+    }
+
+    @Override
+    public String answerDetail(Integer id, HttpSession session, Model model) {
+        Answer answer = exerciseRepository.selectAnswerByID(id);
+        Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("currentKnowledgeID", id);
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        exercise.setSubject_name(subject.getName());
+        exercise.setKnowledge_name(knowledge.getTitle());
+        model.addAttribute("originExercise", exercise);
+        model.addAttribute("originAnswer", answer);
+        return "answerDetail";
     }
 
     public String toReviewAnswer(Integer id, HttpSession session, Model model)

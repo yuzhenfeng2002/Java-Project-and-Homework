@@ -89,6 +89,11 @@ public class ExerciseController extends AuthorityController {
         return exerciseService.answerConclude(id, session, model);
     }
 
+    @RequestMapping("/answerDetail")
+    public String answerDetail(HttpSession session, Model model, Integer id) {
+        return exerciseService.answerDetail(id, session, model);
+    }
+
     @RequestMapping("/reviewConclude")
     public String reviewPage(HttpSession session, Model model, Integer id) {
         User user = (User) session.getAttribute("user");
@@ -97,16 +102,6 @@ public class ExerciseController extends AuthorityController {
             return "errorPage";
         }
         return exerciseService.reviewConclude(id, session, model);
-    }
-
-    @RequestMapping("/reviewDetail")
-    public String reviewDetail(HttpSession session, Model model, Integer id) {
-        User user = (User) session.getAttribute("user");
-        if (user.getUsertype() == 1) {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        return exerciseService.toReviewAnswer(id, session, model);
     }
 
     @RequestMapping("/toReview")

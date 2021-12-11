@@ -10,7 +10,7 @@
     <meta content="Yuzhen" name="author">
 
     <base th:href="@{/}">
-    <title>修改信息</title>
+    <title>批改页面</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" th:href="@{/vendor/fontawesome-free/css/all.min.css}" type="text/css">
@@ -131,7 +131,7 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">修改信息</h1>
+                    <h1 class="h3 mb-0 text-gray-800">批改页面</h1>
                 </div>
 
                 <!-- Content Column -->
@@ -140,44 +140,30 @@
                     <!-- Blog -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 ">
-                            <h6 class="m-0 font-weight-bold text-primary text-center">习题内容</h6>
+                            <h6 class="m-0 font-weight-bold text-primary text-center">作答内容</h6>
                         </div>
                         <div class="card-body">
                             <form class="user" method="post"
-                                  th:action="@{/exercise/modify} + '?id=' + ${originExercise.id}"
-                                  th:object="${originExercise}">
+                                  th:action="@{/exercise/review} + '?id=' + ${originAnswer.id}"
+                                  th:object="${originAnswer}">
                                 <div class="form-group">
-                                    <input class="form-control" disabled placeholder="请输入课程名称"
-                                           th:field="*{subject_name}" type="text">
-                                    <span th:errors="*{subject_name}"></span>
+                                    <input class="form-control" disabled placeholder="请输入作答时间"
+                                           th:field="*{create_time}" type="text">
                                 </div>
 
                                 <div class="form-group">
-                                    <input class="form-control" disabled placeholder="请输入知识标题"
-                                           th:field="*{knowledge_name}" type="text">
-                                    <span th:errors="*{knowledge_name}"></span>
+                                    <input class="form-control" disabled placeholder="请输入作答账户"
+                                           th:field="*{user_email}" type="text">
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-control user-select" th:field="*{type}">
-                                        <option disabled value="-1">请选择习题类型</option>
-                                        <option value="0">简答题</option>
-                                        <option value="1">选择题</option>
-                                        <option value="2">判断题</option>
-                                        <option value="3">填空题</option>
-                                        <option value="4">程序题</option>
-                                        <option value="5">编程题</option>
-                                    </select>
+                                    <textarea class="form-control" disabled placeholder="请输入作答内容"
+                                              rows="6" th:field="*{answer}"></textarea>
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="请输入习题内容" rows="6"
-                                              th:field="*{content}"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <textarea class="form-control" placeholder="请输入习题答案" rows="3"
-                                              th:field="*{answer}"></textarea>
+                                    <input class="form-control" placeholder="请输入作答成绩" th:field="*{is_right}"
+                                           type="number" disabled>
                                 </div>
 
                                 <div class="form-group">

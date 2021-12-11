@@ -182,6 +182,18 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <select class="form-control user-select" th:field="*{type}">
+                                        <option disabled value="-1">请选择习题类型</option>
+                                        <option selected value="0">简答题</option>
+                                        <option value="1">选择题</option>
+                                        <option value="2">判断题</option>
+                                        <option value="3">填空题</option>
+                                        <option value="4">程序题</option>
+                                        <option value="5">编程题</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <textarea class="form-control" placeholder="请输入习题内容" rows="6"
                                               th:field="*{content}"></textarea>
                                 </div>

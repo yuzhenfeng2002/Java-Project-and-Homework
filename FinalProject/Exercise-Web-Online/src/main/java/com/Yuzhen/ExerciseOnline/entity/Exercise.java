@@ -11,6 +11,24 @@ public class Exercise {
     private String knowledge_name;
     private String content;
     private String answer;
+    private Integer type;
+    private Integer optNum;
+
+    public Integer getOptNum() {
+        return optNum;
+    }
+
+    public void setOptNum(Integer optNum) {
+        this.optNum = optNum;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;
