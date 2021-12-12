@@ -58,6 +58,18 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
+    public String toAddExercise(Exercise exercise, HttpSession session, Model model, Integer id) {
+        Knowledge knowledge = knowledgeRepository.selectKnowledge(id);
+        Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("originKnowledge", knowledge);
+        model.addAttribute("originSubject", subject);
+        exercise.setSubject_name(subject.getName());
+        exercise.setKnowledge_name(knowledge.getTitle());
+        return "addExercise";
+    }
+
+    @Override
     public String addExercise(Exercise exercise, HttpSession session, Model model) {
         Subject subject = knowledgeRepository.selectSubjectByName(exercise.getSubject_name());
         if (subject == null) {

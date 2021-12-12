@@ -31,4 +31,6 @@ public interface KnowledgeRepository {
     public int modifySubject(Subject subject);
 
     public int modifyKnowledge(Knowledge knowledge);
+
+    public  int addDependency(Integer id, Integer dep_id);
 }

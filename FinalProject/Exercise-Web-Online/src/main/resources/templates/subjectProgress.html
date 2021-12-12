@@ -163,7 +163,30 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-800" th:text="${currentTitle}"></h1>
-                <span class="mb-4" id="main-body-content"></span>
+                <!-- Dropdown Card -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+                            <thead>
+                            <tr>
+                                <th>知识标题</th>
+                                <th>答题进度</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="knowledge : ${knowledgeList}">
+                                <td th:text="${knowledge.title}"></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" th:style="${'width: ' + knowledge.progress + '%;'}"
+                                             th:aria-valuenow="${knowledge.progress}" aria-valuemin="0" aria-valuemax="100" th:text="${knowledge.progress + '%'}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
             <!-- /.container-fluid -->

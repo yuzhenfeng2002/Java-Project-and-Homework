@@ -159,71 +159,29 @@
                     <h1 class="h3 mb-0 text-gray-800">课程列表</h1>
                 </div>
 
-                <div class="row">
-
-                    <div class="col-lg-6">
-
-                        <!-- Dropdown Card -->
-                        <div class="card shadow mb-4" th:each="subject: ${subjects}">
-                            <div th:if="${subject.id} % 2 == 1">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary" th:text="${subject.name}"></h6>
-                                    <div class="dropdown no-arrow">
-                                        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
-                                           data-toggle="dropdown"
-                                           href="#" role="button">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div aria-labelledby="dropdownMenuLink"
-                                             class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
-                                            <div class="dropdown-header" th:text="${subject.name}"></div>
-                                            <a class="dropdown-item"
-                                               th:href="@{knowledge/subject} + '?id=' + ${subject.id}">查看知识</a>
-                                            <a class="dropdown-item"
-                                               th:href="@{exercise/subject} + '?id=' + ${subject.id}">查看习题</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body" th:id="${'card-body-' + subject.id}"></div>
+                <!-- Dropdown Card -->
+                <div class="card shadow mb-4" th:each="subject: ${subjects}">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="${subject.name}"></h6>
+                        <div class="dropdown no-arrow">
+                            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               href="#" role="button">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div aria-labelledby="dropdownMenuLink"
+                                 class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+                                <div class="dropdown-header" th:text="${subject.name}"></div>
+                                <a class="dropdown-item"
+                                   th:href="@{knowledge/subject} + '?id=' + ${subject.id}">查看知识</a>
+                                <a class="dropdown-item"
+                                   th:href="@{exercise/subject} + '?id=' + ${subject.id}">查看习题</a>
                             </div>
                         </div>
-
                     </div>
-
-                    <div class="col-lg-6">
-
-                        <!-- Dropdown Card -->
-                        <div class="card shadow mb-4" th:each="subject: ${subjects}">
-                            <div th:if="${subject.id} % 2 == 0">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary" th:text="${subject.name}"></h6>
-                                    <div class="dropdown no-arrow">
-                                        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
-                                           data-toggle="dropdown"
-                                           href="#" role="button">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div aria-labelledby="dropdownMenuLink"
-                                             class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
-                                            <div class="dropdown-header" th:text="${subject.name}"></div>
-                                            <a class="dropdown-item"
-                                               th:href="@{knowledge/subject} + '?id=' + ${subject.id}">查看详情</a>
-                                            <a class="dropdown-item"
-                                               th:href="@{exercise/subject} + '?id=' + ${subject.id}">查看习题</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body" th:id="${'card-body-' + subject.id}"></div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
+                    <!-- Card Body -->
+                    <div class="card-body" th:id="${'card-body-' + subject.id}"></div>
                 </div>
 
             </div>

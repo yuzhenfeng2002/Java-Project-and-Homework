@@ -43,14 +43,13 @@ public class KnowledgeController extends AuthorityController {
     }
 
     @RequestMapping("/detail/toAdd")
-    public String toAddKnowledge(@ModelAttribute("knowledge") Knowledge knowledge, HttpSession session, Model model) {
+    public String toAddKnowledge(@ModelAttribute("knowledge") Knowledge knowledge, HttpSession session, Model model, Integer id) {
         User user = (User) session.getAttribute("user");
         if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
         }
-        model.addAttribute("user", user);
-        return "addKnowledge";
+        return knowledgeService.toAddKnowledge(id, session, model, knowledge);
     }
 
     @RequestMapping("/subject/toModify")

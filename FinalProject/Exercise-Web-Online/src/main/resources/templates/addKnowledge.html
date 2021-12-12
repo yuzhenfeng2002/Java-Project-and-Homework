@@ -177,6 +177,15 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <select class="form-control" th:field="*{dependency}" multiple data-mdb-placeholder="请输入前置知识" data-mdb-clear-button="true">
+                                        <option value="-1">请输入前置知识</option>
+                                        <th:block th:each="knowledge: ${knowledgeList}">
+                                            <option th:value="${knowledge.id}" th:text="${knowledge.title}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <input class="form-control" placeholder="请输入知识标题" th:field="*{title}" type="text">
                                     <span th:errors="*{title}"></span>
                                 </div>

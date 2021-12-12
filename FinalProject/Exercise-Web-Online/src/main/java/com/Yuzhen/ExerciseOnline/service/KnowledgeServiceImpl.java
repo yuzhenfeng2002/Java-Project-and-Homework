@@ -57,6 +57,16 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     }
 
     @Override
+    public String toAddKnowledge(Integer id, HttpSession session, Model model, Knowledge knowledge) {
+        Subject subject = knowledgeRepository.selectSubject(id);
+        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
+        knowledge.setSubject_name(subject.getName());
+        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("knowledgeList", knowledgeList);
+        return "addKnowledge";
+    }
+
+    @Override
     public String addSubject(Subject subject, HttpSession session, Model model) {
         if (knowledgeRepository.isSubject(subject.getName()).size() > 0) {
             model.addAttribute("errorMessage", "课程已存在，请前往相关课程页面查看！");
@@ -84,6 +94,11 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             knowledge.setSubject_id(subject.getId());
             // knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
             knowledgeRepository.addKnowledge(knowledge);
+            Knowledge addedKnowledge = knowledgeRepository.selectKnowledgeByName(knowledge.getSubject_id(), knowledge.getTitle());
+            for (Integer dependent_id: knowledge.getDependency()) {
+                if (dependent_id != -1)
+                    knowledgeRepository.addDependency(addedKnowledge.getId(), dependent_id);
+            }
         }
         return ("redirect:/knowledge/subject?id=" + (subject.getId()));
     }

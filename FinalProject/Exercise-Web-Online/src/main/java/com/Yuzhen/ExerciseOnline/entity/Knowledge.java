@@ -1,6 +1,7 @@
 package com.Yuzhen.ExerciseOnline.entity;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class Knowledge {
     private int id;
@@ -10,6 +11,24 @@ public class Knowledge {
     @NotBlank
     private String title;
     private String content;
+    private List<Integer> dependency;
+    private double progress;
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
+
+    public List<Integer> getDependency() {
+        return dependency;
+    }
+
+    public void setDependency(List<Integer> dependency) {
+        this.dependency = dependency;
+    }
 
     public int getId() {
         return id;

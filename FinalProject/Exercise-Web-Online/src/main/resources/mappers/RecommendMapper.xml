@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Yuzhen.ExerciseOnline.repository.RecommendRepository">
+    <select id="selectSubjectByUser" parameterType="User" resultType="Subject">
+        SELECT * FROM subject WHERE id in (SELECT knowledge.subject_id FROM answer, exercise, knowledge
+        where answer.exercise_id=exercise.id and exercise.knowledge_id=knowledge.id and answer.user_email=#{email})
+    </select>
+    <select id="getSubjectProgress" resultType="Integer">
+        SELECT SUM(max) as sum FROM (SELECT MAX(answer.is_right) as max FROM answer, exercise, knowledge
+        where answer.exercise_id=exercise.id and exercise.knowledge_id=knowledge.id and answer.user_email=#{user.email} and knowledge.subject_id=#{subject.id} GROUP BY exercise.id) as T;
+    </select>
+    <select id="getSubjectNum" resultType="Integer">
+        SELECT COUNT(*) FROM exercise, knowledge WHERE exercise.knowledge_id=knowledge.id AND knowledge.subject_id=#{subject.id}
+    </select>
+    <select id="getKnowledgeProgress" resultType="Integer">
+        SELECT SUM(max) as sum FROM (SELECT MAX(answer.is_right) as max FROM answer, exercise
+        where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id) as T;
+    </select>
+    <select id="getKnowledgeNum" resultType="Integer">
+        SELECT COUNT(*) FROM exercise WHERE exercise.knowledge_id=#{knowledge.id};
+    </select>
+</mapper>

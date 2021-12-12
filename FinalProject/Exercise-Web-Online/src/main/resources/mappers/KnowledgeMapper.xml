@@ -39,4 +39,7 @@
     <update id="modifyKnowledge" parameterType="Knowledge">
         update knowledge set title=#{title}, content=#{content} where id=#{id}
     </update>
+    <insert id="addDependency">
+        insert into knowledge_dependency (knowledge_id, dependent_knowledge_id) values(#{id}, #{dep_id})
+    </insert>
 </mapper>

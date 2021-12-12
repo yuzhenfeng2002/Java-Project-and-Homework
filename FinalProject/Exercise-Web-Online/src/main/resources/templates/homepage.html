@@ -10,7 +10,7 @@
     <meta content="Yuzhen" name="author">
 
     <base th:href="@{/}">
-    <title>知识内容</title>
+    <title>我的主页</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" th:href="@{/vendor/fontawesome-free/css/all.min.css}" type="text/css">
@@ -20,8 +20,6 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" th:href="@{/css/sb-admin-2.css}">
-    <script th:inline="javascript" type="text/javascript">
-    </script>
 
 </head>
 
@@ -34,7 +32,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/index}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{index}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -46,41 +44,9 @@
 
         <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/list}">
+            <a class="nav-link" th:href="@{index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程列表</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程介绍</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改课程</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/detail/toModify} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/exercise/toAdd} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加习题</span></a>
+                <span>我的主页</span></a>
         </li>
 
         <!-- Divider -->
@@ -88,15 +54,41 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            知识清单
+            用户功能
         </div>
 
         <!-- Nav Item -->
-        <li class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'"
-            th:each="knowledge : ${knowledgeList}">
-            <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span th:text="${knowledge.title}"></span></a>
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/knowledge/list}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>课程列表</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            管理员功能
+        </div>
+
+        <!-- Nav Item -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/knowledge/subject/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加课程</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/knowledge/detail/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加知识</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/exercise/toAdd}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>添加习题</span></a>
         </li>
 
         <!-- Divider -->
@@ -123,6 +115,7 @@
                 <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop">
                     <i class="fa fa-bars"></i>
                 </button>
+
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -162,8 +155,38 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800" th:text="${currentTitle}"></h1>
-                <span class="mb-4" id="main-body-content"></span>
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">我的主页</h1>
+                </div>
+
+                <!-- Dropdown Card -->
+                <div class="card shadow mb-4" th:each="subject: ${subjects}">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="${subject.name}"></h6>
+                        <div class="dropdown no-arrow">
+                            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               href="#" role="button">
+                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                            </a>
+                            <div aria-labelledby="dropdownMenuLink"
+                                 class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+                                <div class="dropdown-header" th:text="${subject.name}"></div>
+                                <a class="dropdown-item"
+                                   th:href="@{knowledge/subject} + '?id=' + ${subject.id}">查看知识</a>
+                                <a class="dropdown-item"
+                                   th:href="@{exercise/subject} + '?id=' + ${subject.id}">查看习题</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body" th:id="${'card-body-' + subject.id}"></div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" th:style="${'width: ' + subject.progress + '%;'}"
+                             th:aria-valuenow="${subject.progress}" aria-valuemin="0" aria-valuemax="100" th:text="${subject.progress + '%'}"></div>
+                    </div>
+                </div>
 
             </div>
             <!-- /.container-fluid -->
@@ -224,9 +247,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:inline="javascript">
-    var id = 'main-body-content';
-    var content = /*[[${content}]]*/ '暂无内容。';
-    document.getElementById(id).innerHTML = marked.parse(content);
+    /*<![CDATA[*/
+
+        /*[# th:each="subject : ${subjects}"]*/
+            var id = /*[[${'card-body-' + subject.id}]]*/ 'card-body-0';
+            var content = /*[[${subject.introduction}]]*/ '暂无内容。';
+            document.getElementById(id).innerHTML = marked.parse(content);
+        /*[/]*/
+
+    /*]]>*/
 
 
 </script>

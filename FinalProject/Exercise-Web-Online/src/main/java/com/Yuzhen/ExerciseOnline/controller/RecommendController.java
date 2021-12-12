@@ -1,7 +1,10 @@
 package com.Yuzhen.ExerciseOnline.controller;
 
-import com.Yuzhen.ExerciseOnline.entity.*;
+import com.Yuzhen.ExerciseOnline.entity.Answer;
+import com.Yuzhen.ExerciseOnline.entity.Exercise;
+import com.Yuzhen.ExerciseOnline.entity.User;
 import com.Yuzhen.ExerciseOnline.service.ExerciseService;
+import com.Yuzhen.ExerciseOnline.service.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/exercise")
-public class ExerciseController extends AuthorityController {
+public class RecommendController extends AuthorityController {
     @Autowired
-    private ExerciseService exerciseService;
+    private RecommendService recommendService;
 
-    @RequestMapping("/toAdd")
-    public String toAddExercise(@ModelAttribute("exercise") Exercise exercise, HttpSession session, Model model, Integer id) {
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("user", (User) session.getAttribute("user"));
-        if (user.getUsertype() == 1) {
-            model.addAttribute("errorMessage", "您没有权限！");
-            return "errorPage";
-        }
-        return exerciseService.toAddExercise(exercise, session, model, id);
+    @RequestMapping("/index")
+    public String index(HttpSession session, Model model) {
+        return recommendService.listLearningSubject(session, model);
     }
 
+    @RequestMapping("subject/progress")
+    public String knowledgeProgress(HttpSession session, Model model, Integer id)
+    {
+        return recommendService.knowledgeProgress(session, model, id);
+    }
+
+    /*
     @RequestMapping("/add")
     public String addExercise(@ModelAttribute("exercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -123,4 +126,6 @@ public class ExerciseController extends AuthorityController {
         }
         return exerciseService.reviewAnswer(answer, session, model);
     }
+
+    */
 }

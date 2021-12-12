@@ -13,6 +13,7 @@ public interface ExerciseService {
 
     public String showExerciseList(HttpSession session, Model model, Integer knowledge_id);
 
+    public String toAddExercise(Exercise exercise, HttpSession session, Model model, Integer id);
     public String addExercise(Exercise exercise, HttpSession session, Model model);
 
     public String toModifyExercise(Integer id, HttpSession session, Model model);

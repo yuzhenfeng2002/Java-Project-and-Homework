@@ -7,6 +7,15 @@ public class Subject {
     @NotBlank
     private String name;
     private String introduction;
+    private double progress;
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
+    }
 
     public int getId() {
         return id;
