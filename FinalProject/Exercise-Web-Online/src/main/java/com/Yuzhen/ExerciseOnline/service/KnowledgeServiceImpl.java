@@ -61,8 +61,10 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
         knowledge.setSubject_name(subject.getName());
+        knowledge.setSubject_id(subject.getId());
         model.addAttribute("user", ((User) session.getAttribute("user")));
         model.addAttribute("knowledgeList", knowledgeList);
+        model.addAttribute("subject", subject);
         return "addKnowledge";
     }
 
@@ -100,7 +102,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
                     knowledgeRepository.addDependency(addedKnowledge.getId(), dependent_id);
             }
         }
-        return ("redirect:/knowledge/subject?id=" + (subject.getId()));
+        return ("redirect:/subject/progress?id=" + (subject.getId()));
     }
 
     @Override

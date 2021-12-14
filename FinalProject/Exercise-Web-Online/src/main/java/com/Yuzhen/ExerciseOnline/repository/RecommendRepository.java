@@ -13,6 +13,8 @@ public interface RecommendRepository {
     public Integer getSubjectNum(@Param("subject") Subject subject);
     public Integer getKnowledgeProgress(@Param("user") User user, @Param("knowledge") Knowledge knowledge);
     public Integer getKnowledgeNum(@Param("knowledge") Knowledge knowledge);
+    public List<Integer> getDependencies(Knowledge knowledge);
+    public List<Exercise> getRecommendedExercise(@Param("user") User user, @Param("knowledge") Knowledge knowledge, @Param("limit") Integer limit);
 
 //    public Exercise selectExerciseByID(Integer id);
 //

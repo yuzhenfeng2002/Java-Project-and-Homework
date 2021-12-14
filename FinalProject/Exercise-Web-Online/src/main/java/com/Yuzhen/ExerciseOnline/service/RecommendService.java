@@ -10,6 +10,8 @@ public interface RecommendService {
     public String listLearningSubject(HttpSession session, Model model);
 
     public String knowledgeProgress(HttpSession session, Model model, Integer id);
+
+    public String exerciseRecommend(HttpSession session, Model model, Integer id);
 //    public String listKnowledge(HttpSession session, Model model, Integer id);
 //
 //    public String showExerciseList(HttpSession session, Model model, Integer knowledge_id);

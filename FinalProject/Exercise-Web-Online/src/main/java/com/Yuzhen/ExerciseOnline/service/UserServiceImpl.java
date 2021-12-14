@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if (list.size() > 0) // 登录成功
         {
             session.setAttribute("user", list.get(0));
-            return "redirect:/knowledge/list";
+            return "redirect:/index";
         } else // 登录失败
         {
             model.addAttribute("errorMessage", "用户名、密码或用户类型错误！");

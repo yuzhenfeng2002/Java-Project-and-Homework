@@ -46,58 +46,42 @@
 
         <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/list}">
+            <a class="nav-link" th:href="@{/index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程列表</span></a>
+                <span>返回主页</span></a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程介绍</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改课程</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/detail/toModify} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/exercise/toAdd} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加习题</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            知识清单
-        </div>
-
-        <!-- Nav Item -->
-        <li class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'"
-            th:each="knowledge : ${knowledgeList}">
-            <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span th:text="${knowledge.title}"></span></a>
+                <span>课程内容</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{subject/progress} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>知识清单</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{exercise/recommend} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>小试牛刀</span></a>
+        </li>
+
+        <div th:if="${user.usertype} ne '1'">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>修改课程</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>添加知识</span></a>
+            </li>
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -227,7 +211,6 @@
     var id = 'main-body-content';
     var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
-
 
 </script>
 

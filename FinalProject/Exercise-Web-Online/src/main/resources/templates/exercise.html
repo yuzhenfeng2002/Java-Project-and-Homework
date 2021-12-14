@@ -44,28 +44,44 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
+        <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/list}">
+            <a class="nav-link" th:href="@{/index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程列表</span></a>
+                <span>返回主页</span></a>
         </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            知识清单
-        </div>
-
-        <!-- Nav Item - Charts -->
-        <li class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'"
-            th:each="knowledge : ${knowledgeList}">
-            <a class="nav-link" th:href="@{/exercise/list} + '?id=' + ${knowledge.id}">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${subject.id}">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span th:text="${knowledge.title}"></span></a>
+                <span>课程内容</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{subject/progress} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>知识清单</span></a>
+        </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{exercise/recommend} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>小试牛刀</span></a>
+        </li>
+
+        <div th:if="${user.usertype} ne '1'">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>修改课程</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>添加知识</span></a>
+            </li>
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -144,11 +160,13 @@
                                  class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
                                 <!--                                        <div class="dropdown-header" th:text="${subject.name}"></div>-->
                                 <a class="dropdown-item"
-                                   th:href="@{exercise/toModify} + '?id=' + ${exercise.id}">修改习题</a>
-                                <a class="dropdown-item"
                                    th:href="@{exercise/answerConclude} + '?id=' + ${exercise.id}">答题记录</a>
-                                <a class="dropdown-item"
-                                   th:href="@{exercise/reviewConclude} + '?id=' + ${exercise.id}">习题批改</a>
+                                <div th:if="${user.usertype} ne '1'">
+                                    <a class="dropdown-item"
+                                       th:href="@{exercise/toModify} + '?id=' + ${exercise.id}">修改习题</a>
+                                    <a class="dropdown-item"
+                                       th:href="@{exercise/reviewConclude} + '?id=' + ${exercise.id}">习题批改</a>
+                                </div>
                             </div>
                         </div>
                         <h6 class="m-0 font-weight-bold text-primary" th:text="${iter.index} + 1"></h6>
@@ -168,19 +186,20 @@
 
                                 <div class="form-group">
                                     <div th:switch="${exercise.type}">
-                                        <select class="form-control user-select" th:field="*{answer}" th:case="1">
+                                        <select class="form-control user-select" th:case="1" th:field="*{answer}">
                                             <option disabled value="-1">请选择您的答案</option>
                                             <th:block th:each="i: ${#numbers.sequence(0, exercise.optNum - 1)}">
-                                                <option th:value="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}" th:text="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}"></option>
+                                                <option th:text="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}"
+                                                        th:value="${#strings.substring('ABCDEFGHIJKLMN', i, i+1)}"></option>
                                             </th:block>
                                         </select>
-                                        <select class="form-control user-select" th:field="*{answer}" th:case="2">
+                                        <select class="form-control user-select" th:case="2" th:field="*{answer}">
                                             <option disabled value="-1">请选择您的答案</option>
                                             <option value="0">否</option>
                                             <option value="1">是</option>
                                         </select>
                                         <textarea class="form-control" placeholder="请输入您的答案" rows="2"
-                                                  th:field="*{answer}" th:case="*"></textarea>
+                                                  th:case="*" th:field="*{answer}"></textarea>
                                     </div>
                                 </div>
 
@@ -267,7 +286,6 @@
     var id = 'main-body-content';
     var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
-
 
 </script>
 

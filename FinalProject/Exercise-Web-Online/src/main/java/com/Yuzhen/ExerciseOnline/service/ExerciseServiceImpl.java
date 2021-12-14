@@ -89,7 +89,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 System.out.println(1);
             exerciseRepository.addExercise(exercise);
         }
-        return ("redirect:/knowledge/list");
+        return ("redirect:/exercise/list?id=" + (knowledge.getId()));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public String tryToSolveExercise(Answer answer, HttpSession session, Model model) {
         exerciseRepository.recordSolutionHistory(answer);
         Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
-        return ("redirect:/exercise/list?id=" + (exercise.getKnowledge_id()));
+        return ("redirect:/exercise/answerConclude?id=" + (exercise.getId()));
     }
 
     @Override

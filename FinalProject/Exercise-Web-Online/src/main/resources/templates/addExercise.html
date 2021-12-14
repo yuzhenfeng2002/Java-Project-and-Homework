@@ -32,7 +32,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{index}">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/index}">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -44,52 +44,42 @@
 
         <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" th:href="@{index}">
+            <a class="nav-link" th:href="@{/index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>我的主页</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            用户功能
-        </div>
-
-        <!-- Nav Item -->
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/list}">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>课程列表</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            管理员功能
-        </div>
-
-        <!-- Nav Item -->
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/subject/toAdd}">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>添加课程</span></a>
+                <span>返回主页</span></a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/detail/toAdd}">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>添加知识</span></a>
+            <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>课程内容</span></a>
         </li>
 
         <li class="nav-item active">
-            <a class="nav-link" th:href="@{/exercise/toAdd}">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>添加习题</span></a>
+            <a class="nav-link" th:href="@{subject/progress} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>知识清单</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{exercise/recommend} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>小试牛刀</span></a>
+        </li>
+
+        <div th:if="${user.usertype} ne '1'">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${originSubject.id}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>修改课程</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${originSubject.id}">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>添加知识</span></a>
+            </li>
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

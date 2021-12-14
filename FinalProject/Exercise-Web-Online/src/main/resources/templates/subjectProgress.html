@@ -22,6 +22,8 @@
     <link rel="stylesheet" th:href="@{/css/sb-admin-2.css}">
     <script th:inline="javascript" type="text/javascript">
     </script>
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -46,58 +48,42 @@
 
         <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/list}">
+            <a class="nav-link" th:href="@{/index}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程列表</span></a>
+                <span>返回主页</span></a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link" th:href="@{knowledge/subject} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>课程介绍</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改课程</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{knowledge/detail/toModify} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>修改知识</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/exercise/toAdd} + '?id=' + ${currentKnowledgeID}"
-               th:if="${currentKnowledgeID} != -1">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>添加习题</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            知识清单
-        </div>
-
-        <!-- Nav Item -->
-        <li class="nav-item active" th:class="${knowledge.id} == ${currentKnowledgeID}? 'nav-item active':'nav-item'"
-            th:each="knowledge : ${knowledgeList}">
-            <a class="nav-link" th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span th:text="${knowledge.title}"></span></a>
+                <span>课程内容</span></a>
         </li>
+
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{subject/progress} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>知识清单</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{exercise/recommend} + '?id=' + ${subject.id}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>小试牛刀</span></a>
+        </li>
+
+        <div th:if="${user.usertype} ne '1'">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>修改课程</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>添加知识</span></a>
+            </li>
+        </div>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -163,28 +149,60 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-800" th:text="${currentTitle}"></h1>
-                <!-- Dropdown Card -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
-                            <thead>
-                            <tr>
-                                <th>知识标题</th>
-                                <th>答题进度</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="knowledge : ${knowledgeList}">
-                                <td th:text="${knowledge.title}"></td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" th:style="${'width: ' + knowledge.progress + '%;'}"
-                                             th:aria-valuenow="${knowledge.progress}" aria-valuemin="0" aria-valuemax="100" th:text="${knowledge.progress + '%'}"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">知识清单</h6>
+                    </div>
+                    <!-- Dropdown Card -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>知识标题</th>
+                                    <th>答题进度</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="knowledge : ${knowledgeList}">
+                                    <td th:text="${knowledge.title}"></td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" th:style="${'width: ' + knowledge.progress + '%;'}"
+                                                 th:aria-valuenow="${knowledge.progress}" aria-valuemin="0" aria-valuemax="100" th:text="${knowledge.progress + '%'}"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown no-arrow">
+                                            <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle"
+                                               data-toggle="dropdown"
+                                               href="#" role="button">
+                                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            </a>
+                                            <div aria-labelledby="dropdownMenuLink"
+                                                 class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+                                                <div class="dropdown-header" th:text="${subject.name}"></div>
+                                                <a class="dropdown-item"
+                                                   th:href="@{/knowledge/detail} + '?id=' + ${knowledge.id}">查看知识</a>
+                                                <a class="dropdown-item"
+                                                   th:href="@{/exercise/list} + '?id=' + ${knowledge.id}">查看习题</a>
+                                                <div th:if="${user.usertype} ne '1'">
+                                                    <a class="dropdown-item"
+                                                       th:href="@{/knowledge/detail/toAdd} + '?id=' + ${subject.id}">添加知识</a>
+                                                    <a class="dropdown-item"
+                                                       th:href="@{/knowledge/detail/toModify} + '?id=' + ${knowledge.id}">修改知识</a>
+                                                    <a class="dropdown-item"
+                                                       th:href="@{/exercise/toAdd} + '?id=' + ${knowledge.id}">添加习题</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -251,8 +269,14 @@
     var content = /*[[${content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
 
-
 </script>
+
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
 
 </body>
 

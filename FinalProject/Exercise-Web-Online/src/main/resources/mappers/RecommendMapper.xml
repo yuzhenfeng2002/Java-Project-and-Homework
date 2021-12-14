@@ -21,4 +21,14 @@
     <select id="getKnowledgeNum" resultType="Integer">
         SELECT COUNT(*) FROM exercise WHERE exercise.knowledge_id=#{knowledge.id};
     </select>
+    <select id="getDependencies" parameterType="Knowledge" resultType="Integer">
+        SELECT dependent_knowledge_id FROM knowledge_dependency where knowledge_id=#{id};
+    </select>
+    <select id="getRecommendedExercise" resultType="Exercise">
+        SELECT exercise.* FROM answer, exercise where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id HAVING MAX(answer.is_right) &lt; #{limit}
+
+        UNION
+
+        SELECT * FROM exercise WHERE id NOT IN (SELECT exercise.id FROM answer, exercise where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email}) AND knowledge_id=#{knowledge.id};
+    </select>
 </mapper>

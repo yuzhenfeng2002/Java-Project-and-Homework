@@ -55,12 +55,12 @@
                                         <input aria-describedby="emailHelp" class="form-control form-control-user"
                                                placeholder="请输入您的邮箱"
                                                th:field="*{email}" type="email">
-                                        <span th:errors="*{email}"></span>
+                                        <span class="small" th:errors="*{email}"></span>
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control form-control-user" placeholder="请输入您的密码"
                                                th:field="*{password}" type="password"/>
-                                        <span th:errors="*{password}"></span>
+                                        <span class="small" th:errors="*{password}"></span>
                                     </div>
                                     <div class="form-group">
                                         <select class="form-control user-select" th:field="*{usertype}">

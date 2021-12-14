@@ -31,6 +31,12 @@ public class RecommendController extends AuthorityController {
         return recommendService.knowledgeProgress(session, model, id);
     }
 
+    @RequestMapping("exercise/recommend")
+    public String exerciseRecommend(@ModelAttribute("myAnswer") @Validated Answer answer, HttpSession session, Model model, Integer id)
+    {
+        return recommendService.exerciseRecommend(session, model, id);
+    }
+
     /*
     @RequestMapping("/add")
     public String addExercise(@ModelAttribute("exercise") @Validated Exercise exercise, BindingResult rs, HttpSession session, Model model) {

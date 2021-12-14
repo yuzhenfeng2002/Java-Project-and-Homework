@@ -13,6 +13,15 @@ public class Knowledge {
     private String content;
     private List<Integer> dependency;
     private double progress;
+    private boolean isDependent;
+
+    public boolean isDependent() {
+        return isDependent;
+    }
+
+    public void setDependent(boolean dependent) {
+        isDependent = dependent;
+    }
 
     public double getProgress() {
         return progress;
