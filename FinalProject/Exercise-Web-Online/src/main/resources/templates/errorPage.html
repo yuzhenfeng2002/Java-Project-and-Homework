@@ -61,23 +61,6 @@
                 <span>课程列表</span></a>
         </li>
 
-        <div th:if="${user.usertype} ne '1'">
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                管理员功能
-            </div>
-
-            <!-- Nav Item -->
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/knowledge/subject/toAdd}">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>添加课程</span></a>
-            </li>
-        </div>
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 

@@ -1,7 +1,10 @@
 package com.Yuzhen.ExerciseOnline.service;
 
 import com.Yuzhen.ExerciseOnline.auxiliary.Auxiliary;
-import com.Yuzhen.ExerciseOnline.entity.*;
+import com.Yuzhen.ExerciseOnline.entity.Exercise;
+import com.Yuzhen.ExerciseOnline.entity.Knowledge;
+import com.Yuzhen.ExerciseOnline.entity.Subject;
+import com.Yuzhen.ExerciseOnline.entity.User;
 import com.Yuzhen.ExerciseOnline.repository.ExerciseRepository;
 import com.Yuzhen.ExerciseOnline.repository.KnowledgeRepository;
 import com.Yuzhen.ExerciseOnline.repository.RecommendRepository;
@@ -10,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -26,18 +31,16 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public String listLearningSubject(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
-        model.addAttribute("user", (User) session.getAttribute("user"));
+        model.addAttribute("user", session.getAttribute("user"));
         List<Subject> learningSubjects = recommendRepository.selectSubjectByUser(user);
-        for (Subject subject: learningSubjects) {
+        for (Subject subject : learningSubjects) {
             Integer count = recommendRepository.getSubjectNum(subject);
             double progress;
-            if (count == 0)
-            {
+            if (count == 0) {
                 progress = 100;
-            }
-            else {
+            } else {
                 Integer sum = recommendRepository.getSubjectProgress(user, subject);
-                progress = (double) (sum / count);
+                progress = sum * 1.0 / count;
             }
             subject.setProgress(progress);
         }
@@ -48,32 +51,28 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public String knowledgeProgress(HttpSession session, Model model, Integer id) {
         User user = (User) session.getAttribute("user");
-        model.addAttribute("user", (User) session.getAttribute("user"));
+        model.addAttribute("user", session.getAttribute("user"));
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        for (Knowledge knowledge: knowledgeList) {
+        for (Knowledge knowledge : knowledgeList) {
             Integer count = recommendRepository.getKnowledgeNum(knowledge);
             double progress;
-            if (count == 0)
-            {
+            if (count == 0) {
                 progress = 100;
-            }
-            else {
+            } else {
                 Integer sum;
-                if (recommendRepository.getKnowledgeProgress(user, knowledge) == null)
-                {
+                if (recommendRepository.getKnowledgeProgress(user, knowledge) == null) {
                     sum = 0;
-                }
-                else {
+                } else {
                     sum = recommendRepository.getKnowledgeProgress(user, knowledge);
                 }
-                progress = (double) (sum / count);
+                progress = sum * 1.0 / count;
             }
             knowledge.setProgress(progress);
         }
         model.addAttribute("subject", subject);
         model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", -1);
+        // model.addAttribute("currentKnowledgeID", -1);
         model.addAttribute("currentTitle", subject.getName());
         return "subjectProgress";
     }
@@ -81,30 +80,26 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public String exerciseRecommend(HttpSession session, Model model, Integer id) {
         Integer recommendNum = 15;
-        double progressLimit = 0.75;
+        double progressLimit = 75;
         Integer scoreLimit = 85;
         User user = (User) session.getAttribute("user");
-        model.addAttribute("user", (User) session.getAttribute("user"));
+        model.addAttribute("user", session.getAttribute("user"));
         Subject subject = knowledgeRepository.selectSubject(id);
         List<Exercise> exerciseList = new LinkedList<Exercise>();
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        for (Knowledge knowledge: knowledgeList) {
+        for (Knowledge knowledge : knowledgeList) {
             Integer count = recommendRepository.getKnowledgeNum(knowledge);
             double progress;
-            if (count == 0)
-            {
+            if (count == 0) {
                 progress = 100;
-            }
-            else {
+            } else {
                 Integer sum;
-                if (recommendRepository.getKnowledgeProgress(user, knowledge) == null)
-                {
+                if (recommendRepository.getKnowledgeProgress(user, knowledge) == null) {
                     sum = 0;
-                }
-                else {
+                } else {
                     sum = recommendRepository.getKnowledgeProgress(user, knowledge);
                 }
-                progress = (double) (sum / count);
+                progress = sum * 1.0 / count;
             }
             knowledge.setProgress(progress);
 
@@ -127,25 +122,24 @@ public class RecommendServiceImpl implements RecommendService {
                         } else {
                             sum = recommendRepository.getKnowledgeProgress(user, dependentKnowledge);
                         }
-                        progressK = (double) (sum / countK);
+                        progressK = sum * 1.0 / countK;
                     }
+                    System.out.println(progressK);
                     isDependent = (isDependent || (progressK < progressLimit));
                 }
                 knowledge.setDependent(isDependent);
                 if (!isDependent) {
                     exerciseList.addAll(exerciseRepository.selectExercise(knowledge.getId()));
                 }
-            }
-            else {
+            } else {
                 exerciseList.addAll(recommendRepository.getRecommendedExercise(user, knowledge, scoreLimit));
             }
         }
         int deleteNum = exerciseList.size() - recommendNum;
-        for (int i = 0; i < deleteNum; i ++)
-        {
+        for (int i = 0; i < deleteNum; i++) {
             exerciseList.remove(ThreadLocalRandom.current().nextInt(0, exerciseList.size()));
         }
-        for (Exercise exercise: exerciseList){
+        for (Exercise exercise : exerciseList) {
             if (exercise.getType() == 1) {
                 Map<String, Object> result = Auxiliary.modifyRatioExercise(exercise.getContent());
                 String modifiedContent = (String) result.get("modified_str");
@@ -153,11 +147,13 @@ public class RecommendServiceImpl implements RecommendService {
                 exercise.setContent(modifiedContent);
                 exercise.setOptNum(opt_num);
             }
+            exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+            exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         }
         model.addAttribute("exercises", exerciseList);
         model.addAttribute("subject", subject);
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", -1);
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", -1);
         model.addAttribute("currentTitle", subject.getName());
         return "exercise";
     }

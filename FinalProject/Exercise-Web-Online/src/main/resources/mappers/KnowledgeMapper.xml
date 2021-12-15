@@ -42,4 +42,7 @@
     <insert id="addDependency">
         insert into knowledge_dependency (knowledge_id, dependent_knowledge_id) values(#{id}, #{dep_id})
     </insert>
+    <select id="dropDependency">
+        DELETE FROM knowledge_dependency where knowledge_id=#{id}
+    </select>
 </mapper>

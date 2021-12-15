@@ -1,7 +1,5 @@
 package com.Yuzhen.ExerciseOnline;
 
-import java.sql.SQLException;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

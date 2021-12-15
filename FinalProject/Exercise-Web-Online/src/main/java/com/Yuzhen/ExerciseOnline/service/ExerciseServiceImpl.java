@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,30 +20,17 @@ public class ExerciseServiceImpl implements ExerciseService {
     private ExerciseRepository exerciseRepository;
 
     @Override
-    public String listKnowledge(HttpSession session, Model model, Integer id) {
-        Subject subject = knowledgeRepository.selectSubject(id);
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("subject", subject);
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", -1);
-        model.addAttribute("currentTitle", subject.getName());
-        model.addAttribute("content", Auxiliary.modifyContent(subject.getIntroduction()));
-        return "exercise";
-    }
-
-    @Override
     public String showExerciseList(HttpSession session, Model model, Integer knowledge_id) {
         Knowledge knowledge = knowledgeRepository.selectKnowledge(knowledge_id);
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
         List<Exercise> exerciseList = exerciseRepository.selectExercise(knowledge_id);
-        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("subject", subject);
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", knowledge_id);
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", knowledge_id);
         model.addAttribute("currentTitle", knowledge.getTitle());
-        for (Exercise exercise: exerciseList){
+        for (Exercise exercise : exerciseList) {
             if (exercise.getType() == 1) {
                 Map<String, Object> result = Auxiliary.modifyRatioExercise(exercise.getContent());
                 String modifiedContent = (String) result.get("modified_str");
@@ -52,6 +38,8 @@ public class ExerciseServiceImpl implements ExerciseService {
                 exercise.setContent(modifiedContent);
                 exercise.setOptNum(opt_num);
             }
+            exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+            exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         }
         model.addAttribute("exercises", exerciseList);
         return "exercise";
@@ -61,7 +49,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public String toAddExercise(Exercise exercise, HttpSession session, Model model, Integer id) {
         Knowledge knowledge = knowledgeRepository.selectKnowledge(id);
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
+        model.addAttribute("user", session.getAttribute("user"));
         model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
@@ -74,19 +62,16 @@ public class ExerciseServiceImpl implements ExerciseService {
         Subject subject = knowledgeRepository.selectSubjectByName(exercise.getSubject_name());
         if (subject == null) {
             model.addAttribute("errorMessage", "课程不存在，请前往课程页面确认！");
-            model.addAttribute("user", (User) session.getAttribute("user"));
+            model.addAttribute("user", session.getAttribute("user"));
             return "addExercise";
         }
         Knowledge knowledge = knowledgeRepository.selectKnowledgeByName(subject.getId(), exercise.getKnowledge_name());
         if (knowledge == null) {
             model.addAttribute("errorMessage", "知识点不存在，请前往相关课程页面确认！");
-            model.addAttribute("user", (User) session.getAttribute("user"));
+            model.addAttribute("user", session.getAttribute("user"));
             return "addExercise";
         } else {
             exercise.setKnowledge_id(knowledge.getId());
-            // knowledge.setContent(Auxiliary.modifyContent(knowledge.getContent()));
-            if (exerciseRepository == null)
-                System.out.println(1);
             exerciseRepository.addExercise(exercise);
         }
         return ("redirect:/exercise/list?id=" + (knowledge.getId()));
@@ -97,11 +82,11 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.selectExerciseByID(id);
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", id);
-        model.addAttribute("originKnowledge", knowledge);
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", session.getAttribute("user"));
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", id);
+        // model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
@@ -130,11 +115,11 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.selectExerciseByID(id);
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", id);
-        model.addAttribute("originKnowledge", knowledge);
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", session.getAttribute("user"));
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", id);
+        // model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
@@ -145,6 +130,8 @@ public class ExerciseServiceImpl implements ExerciseService {
             exercise.setContent(modifiedContent);
             exercise.setOptNum(opt_num);
         }
+        exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+        exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         model.addAttribute("originExercise", exercise);
         model.addAttribute("answerList", answerList);
         return "answerConclude";
@@ -156,11 +143,11 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.selectExerciseByID(id);
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", id);
-        model.addAttribute("originKnowledge", knowledge);
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", session.getAttribute("user"));
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", id);
+        // model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
@@ -171,6 +158,8 @@ public class ExerciseServiceImpl implements ExerciseService {
             exercise.setContent(modifiedContent);
             exercise.setOptNum(opt_num);
         }
+        exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+        exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         model.addAttribute("originExercise", exercise);
         model.addAttribute("answerList", answerList);
         return "reviewConclude";
@@ -182,35 +171,38 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", id);
-        model.addAttribute("originKnowledge", knowledge);
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", session.getAttribute("user"));
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", id);
+        // model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
+        exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+        exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         model.addAttribute("originExercise", exercise);
         model.addAttribute("originAnswer", answer);
         return "answerDetail";
     }
 
-    public String toReviewAnswer(Integer id, HttpSession session, Model model)
-    {
+    public String toReviewAnswer(Integer id, HttpSession session, Model model) {
         Answer answer = exerciseRepository.selectAnswerByID(id);
         Exercise exercise = exerciseRepository.selectExerciseByID(answer.getExercise_id());
         Knowledge knowledge = knowledgeRepository.selectKnowledge(exercise.getKnowledge_id());
         Subject subject = knowledgeRepository.selectSubject(knowledge.getSubject_id());
-        List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
-        model.addAttribute("user", ((User) session.getAttribute("user")));
-        model.addAttribute("knowledgeList", knowledgeList);
-        model.addAttribute("currentKnowledgeID", id);
-        model.addAttribute("originKnowledge", knowledge);
+        // List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(knowledge.getSubject_id());
+        model.addAttribute("user", session.getAttribute("user"));
+        // model.addAttribute("knowledgeList", knowledgeList);
+        // model.addAttribute("currentKnowledgeID", id);
+        // model.addAttribute("originKnowledge", knowledge);
         model.addAttribute("originSubject", subject);
         exercise.setSubject_name(subject.getName());
         exercise.setKnowledge_name(knowledge.getTitle());
+        exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
+        exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
         model.addAttribute("originExercise", exercise);
-        answer.setIs_right(0);
+        answer.setIs_right(100);
         model.addAttribute("originAnswer", answer);
         return "reviewDetail";
     }

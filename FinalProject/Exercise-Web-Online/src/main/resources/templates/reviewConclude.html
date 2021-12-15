@@ -152,6 +152,7 @@
                     <h1 class="h3 mb-0 text-gray-800">批改页面</h1>
                 </div>
                 <p class="mb-4" id="exercise-content"></p>
+                <p class="mb-4" id="exercise-answer"></p>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
@@ -248,9 +249,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:inline="javascript">
-    var id = 'exercise-content';
+    var content_id = 'exercise-content';
     var content = /*[[${originExercise.content}]]*/ '暂无内容。';
-    document.getElementById(id).innerHTML = marked.parse(content);
+    var answer_id = 'exercise-answer';
+    var answer = /*[[${originExercise.answer}]]*/ '暂无答案。';
+    document.getElementById(content_id).innerHTML = marked.parse(content);
+    document.getElementById(answer_id).innerHTML = marked.parse(answer);
 
 </script>
 

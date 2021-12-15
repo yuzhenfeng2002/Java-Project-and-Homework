@@ -182,7 +182,7 @@
                     <div aria-labelledby="headingPages" class="collapse" th:id="${'collapsePages' + exercise.id}">
                         <div class="card-body">
                             <form class="user" method="post"
-                                  th:action="@{/exercise/tryToSolve} + '?id=' + ${exercise.id}" th:object="${myAnswer}">
+                                  th:action="@{/exercise/tryToSolve} + '?id=' + ${exercise.id}" th:object="${myAnswer}" target="_blank">
 
                                 <div class="form-group">
                                     <div th:switch="${exercise.type}">

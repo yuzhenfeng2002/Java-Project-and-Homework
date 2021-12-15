@@ -1,6 +1,8 @@
 package com.Yuzhen.ExerciseOnline.controller;
 
-import com.Yuzhen.ExerciseOnline.entity.*;
+import com.Yuzhen.ExerciseOnline.entity.Answer;
+import com.Yuzhen.ExerciseOnline.entity.Exercise;
+import com.Yuzhen.ExerciseOnline.entity.User;
 import com.Yuzhen.ExerciseOnline.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,7 @@ public class ExerciseController extends AuthorityController {
     @RequestMapping("/toAdd")
     public String toAddExercise(@ModelAttribute("exercise") Exercise exercise, HttpSession session, Model model, Integer id) {
         User user = (User) session.getAttribute("user");
-        model.addAttribute("user", (User) session.getAttribute("user"));
+        model.addAttribute("user", session.getAttribute("user"));
         if (user.getUsertype() == 1) {
             model.addAttribute("errorMessage", "您没有权限！");
             return "errorPage";
@@ -41,11 +43,6 @@ public class ExerciseController extends AuthorityController {
             return "addExercise";
         }
         return exerciseService.addExercise(exercise, session, model);
-    }
-
-    @RequestMapping("/subject")
-    public String subjectDetail(HttpSession session, Model model, Integer id) {
-        return exerciseService.listKnowledge(session, model, id);
     }
 
     @RequestMapping("/list")
