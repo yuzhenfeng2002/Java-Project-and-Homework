@@ -45,4 +45,16 @@
     <select id="dropDependency">
         DELETE FROM knowledge_dependency where knowledge_id=#{id}
     </select>
+    <select id="listImageOfUser" parameterType="User" resultType="Image">
+        SELECT * FROM image WHERE user_email=#{email}
+    </select>
+    <insert id="addImage">
+        insert into image (user_email, filename, new_name) values(#{user.email}, #{image.filename}, #{image.new_name})
+    </insert>
+    <delete id="deleteImage">
+        delete from image where id=#{id}
+    </delete>
+    <select id="selectImage" resultType="Image">
+        select * from image where id=#{id} limit 1
+    </select>
 </mapper>

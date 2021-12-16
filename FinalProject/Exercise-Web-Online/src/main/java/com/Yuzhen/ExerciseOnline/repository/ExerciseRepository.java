@@ -22,6 +22,8 @@ public interface ExerciseRepository {
 
     List<Answer> selectAnswerByUser(@Param("email") String email, @Param("id") Integer id);
 
+    List<Answer> selectAnswerByUserAndSubject(@Param("email") String email, @Param("id") Integer id);
+
     Answer selectAnswerByID(Integer id);
 
     List<Answer> selectAnswerByExerciseID(Integer id);

@@ -1,9 +1,11 @@
 package com.Yuzhen.ExerciseOnline.service;
 
+import com.Yuzhen.ExerciseOnline.entity.Image;
 import com.Yuzhen.ExerciseOnline.entity.Knowledge;
 import com.Yuzhen.ExerciseOnline.entity.Subject;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public interface KnowledgeService {
@@ -26,4 +28,10 @@ public interface KnowledgeService {
     String modifySubject(Subject subject, HttpSession session, Model model);
 
     String modifyKnowledge(Knowledge knowledge, HttpSession session, Model model);
+
+    String toAddImage(HttpSession session, Model model);
+
+    String addImage(Image image, HttpSession session, Model model, HttpServletRequest request);
+
+    String deleteImage(Integer id, HttpSession session, Model model, HttpServletRequest request);
 }

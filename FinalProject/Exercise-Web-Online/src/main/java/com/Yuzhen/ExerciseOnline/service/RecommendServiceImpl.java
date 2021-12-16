@@ -35,12 +35,17 @@ public class RecommendServiceImpl implements RecommendService {
         List<Subject> learningSubjects = recommendRepository.selectSubjectByUser(user);
         for (Subject subject : learningSubjects) {
             Integer count = recommendRepository.getSubjectNum(subject);
-            double progress;
+            int progress;
             if (count == 0) {
                 progress = 100;
             } else {
-                Integer sum = recommendRepository.getSubjectProgress(user, subject);
-                progress = sum * 1.0 / count;
+                Integer sum;
+                if (recommendRepository.getSubjectProgress(user, subject) == null) {
+                    sum = 0;
+                } else {
+                    sum = recommendRepository.getSubjectProgress(user, subject);
+                }
+                progress = (int) (sum * 1.0 / count);
             }
             subject.setProgress(progress);
         }
@@ -56,7 +61,7 @@ public class RecommendServiceImpl implements RecommendService {
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
         for (Knowledge knowledge : knowledgeList) {
             Integer count = recommendRepository.getKnowledgeNum(knowledge);
-            double progress;
+            int progress;
             if (count == 0) {
                 progress = 100;
             } else {
@@ -66,7 +71,7 @@ public class RecommendServiceImpl implements RecommendService {
                 } else {
                     sum = recommendRepository.getKnowledgeProgress(user, knowledge);
                 }
-                progress = sum * 1.0 / count;
+                progress = (int) (sum * 1.0 / count);
             }
             knowledge.setProgress(progress);
         }
@@ -89,7 +94,7 @@ public class RecommendServiceImpl implements RecommendService {
         List<Knowledge> knowledgeList = knowledgeRepository.listKnowledge(id);
         for (Knowledge knowledge : knowledgeList) {
             Integer count = recommendRepository.getKnowledgeNum(knowledge);
-            double progress;
+            int progress;
             if (count == 0) {
                 progress = 100;
             } else {
@@ -99,7 +104,7 @@ public class RecommendServiceImpl implements RecommendService {
                 } else {
                     sum = recommendRepository.getKnowledgeProgress(user, knowledge);
                 }
-                progress = sum * 1.0 / count;
+                progress = (int) (sum * 1.0 / count);
             }
             knowledge.setProgress(progress);
 
@@ -124,7 +129,7 @@ public class RecommendServiceImpl implements RecommendService {
                         }
                         progressK = sum * 1.0 / countK;
                     }
-                    System.out.println(progressK);
+                    // System.out.println(progressK);
                     isDependent = (isDependent || (progressK < progressLimit));
                 }
                 knowledge.setDependent(isDependent);
@@ -149,6 +154,7 @@ public class RecommendServiceImpl implements RecommendService {
             }
             exercise.setContent(Auxiliary.modifyContent(exercise.getContent()));
             exercise.setAnswer(Auxiliary.modifyContent(exercise.getAnswer()));
+            exercise.setKnowledge_name(knowledgeRepository.selectKnowledge(exercise.getKnowledge_id()).getTitle());
         }
         model.addAttribute("exercises", exerciseList);
         model.addAttribute("subject", subject);

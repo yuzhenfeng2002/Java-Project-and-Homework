@@ -9,14 +9,14 @@
     </select>
     <select id="getSubjectProgress" resultType="Integer">
         SELECT SUM(max) as sum FROM (SELECT MAX(answer.is_right) as max FROM answer, exercise, knowledge
-        where answer.exercise_id=exercise.id and exercise.knowledge_id=knowledge.id and answer.user_email=#{user.email} and knowledge.subject_id=#{subject.id} GROUP BY exercise.id) as T;
+        where answer.exercise_id=exercise.id and exercise.knowledge_id=knowledge.id and answer.user_email=#{user.email} and knowledge.subject_id=#{subject.id} GROUP BY exercise.id HAVING max != -1) as T;
     </select>
     <select id="getSubjectNum" resultType="Integer">
         SELECT COUNT(*) FROM exercise, knowledge WHERE exercise.knowledge_id=knowledge.id AND knowledge.subject_id=#{subject.id}
     </select>
     <select id="getKnowledgeProgress" resultType="Integer">
         SELECT SUM(max) as sum FROM (SELECT MAX(answer.is_right) as max FROM answer, exercise
-        where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id) as T;
+        where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id HAVING max != -1) as T;
     </select>
     <select id="getKnowledgeNum" resultType="Integer">
         SELECT COUNT(*) FROM exercise WHERE exercise.knowledge_id=#{knowledge.id};
@@ -25,7 +25,7 @@
         SELECT dependent_knowledge_id FROM knowledge_dependency where knowledge_id=#{id};
     </select>
     <select id="getRecommendedExercise" resultType="Exercise">
-        SELECT exercise.* FROM answer, exercise where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id HAVING MAX(answer.is_right) &lt; #{limit}
+        SELECT exercise.* FROM answer, exercise where answer.exercise_id=exercise.id and exercise.knowledge_id=#{knowledge.id} and answer.user_email=#{user.email} GROUP BY exercise.id HAVING MAX(answer.is_right) &lt; #{limit} and MAX(answer.is_right) != -1
 
         UNION
 

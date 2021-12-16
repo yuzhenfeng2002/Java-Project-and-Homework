@@ -138,6 +138,19 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
+    public String subjectAnswerConclude(Integer id, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        List<Answer> answerList = exerciseRepository.selectAnswerByUserAndSubject(user.getEmail(), id);
+        Subject subject = knowledgeRepository.selectSubject(id);
+        model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("originSubject", subject);
+        model.addAttribute("answerList", answerList);
+        Exercise exercise = new Exercise();
+        model.addAttribute("originExercise", exercise);
+        return "answerConclude";
+    }
+
+    @Override
     public String reviewConclude(Integer id, HttpSession session, Model model) {
         List<Answer> answerList = exerciseRepository.selectAnswerByExerciseID(id);
         Exercise exercise = exerciseRepository.selectExerciseByID(id);

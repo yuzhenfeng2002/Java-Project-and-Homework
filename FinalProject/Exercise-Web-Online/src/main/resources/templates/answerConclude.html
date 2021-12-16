@@ -71,6 +71,12 @@
                 <span>小试牛刀</span></a>
         </li>
 
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{exercise/subjectAnswerConclude} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                <span>作答记录</span></a>
+        </li>
+
         <div th:if="${user.usertype} ne '1'">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${originSubject.id}">
@@ -151,7 +157,7 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">我的作答</h1>
                 </div>
-                <p class="mb-4" id="exercise-content" th:text="${originExercise.content}"></p>
+                <p class="mb-4" id="exercise-content" th:if="${originExercise.content}" th:text="${originExercise.content}"></p>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">

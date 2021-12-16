@@ -69,6 +69,12 @@
                 <span>小试牛刀</span></a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{exercise/subjectAnswerConclude} + '?id=' + ${originSubject.id}">
+                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                <span>作答记录</span></a>
+        </li>
+
         <div th:if="${user.usertype} ne '1'">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{knowledge/subject/toModify} + '?id=' + ${originSubject.id}">
@@ -149,6 +155,7 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">回答详情</h1>
                 </div>
+                <p class="mb-4" id="exercise-content" th:text="${originExercise.content}"></p>
 
                 <!-- Content Column -->
                 <div class="col-xl-8 col-lg-12 col-md-12 m-auto">
@@ -254,8 +261,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:inline="javascript">
-    var id = 'main-body-content';
-    var content = /*[[${content}]]*/ '暂无内容。';
+    var id = 'exercise-content';
+    var content = /*[[${originExercise.content}]]*/ '暂无内容。';
     document.getElementById(id).innerHTML = marked.parse(content);
 
 

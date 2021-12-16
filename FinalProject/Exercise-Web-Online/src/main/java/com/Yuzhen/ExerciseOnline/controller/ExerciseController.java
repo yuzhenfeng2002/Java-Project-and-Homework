@@ -86,6 +86,11 @@ public class ExerciseController extends AuthorityController {
         return exerciseService.answerConclude(id, session, model);
     }
 
+    @RequestMapping("/subjectAnswerConclude")
+    public String subjectAnswerConclude(HttpSession session, Model model, Integer id) {
+        return exerciseService.subjectAnswerConclude(id, session, model);
+    }
+
     @RequestMapping("/answerDetail")
     public String answerDetail(HttpSession session, Model model, Integer id) {
         return exerciseService.answerDetail(id, session, model);

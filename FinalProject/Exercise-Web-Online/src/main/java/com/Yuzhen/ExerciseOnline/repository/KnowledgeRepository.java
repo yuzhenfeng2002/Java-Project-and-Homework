@@ -1,8 +1,11 @@
 package com.Yuzhen.ExerciseOnline.repository;
 
+import com.Yuzhen.ExerciseOnline.entity.Image;
 import com.Yuzhen.ExerciseOnline.entity.Knowledge;
 import com.Yuzhen.ExerciseOnline.entity.Subject;
+import com.Yuzhen.ExerciseOnline.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,4 +38,12 @@ public interface KnowledgeRepository {
     int addDependency(Integer id, Integer dep_id);
 
     void dropDependency(Integer id);
+
+    List<Image> listImageOfUser(User user);
+
+    int addImage(@Param("user") User user, @Param("image") Image image);
+
+    int deleteImage(Integer id);
+
+    Image selectImage(Integer id);
 }

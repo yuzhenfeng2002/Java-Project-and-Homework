@@ -1,5 +1,6 @@
 package com.Yuzhen.ExerciseOnline.controller;
 
+import com.Yuzhen.ExerciseOnline.entity.Image;
 import com.Yuzhen.ExerciseOnline.entity.Knowledge;
 import com.Yuzhen.ExerciseOnline.entity.Subject;
 import com.Yuzhen.ExerciseOnline.entity.User;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -128,5 +130,35 @@ public class KnowledgeController extends AuthorityController {
     @RequestMapping("/detail")
     public String knowledgeDetail(HttpSession session, Model model, Integer id) {
         return knowledgeService.showKnowledgeDetail(session, model, id);
+    }
+
+    @RequestMapping("/toAddImage")
+    public String toAddImage(@ModelAttribute("image") Image image, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return knowledgeService.toAddImage(session, model);
+    }
+
+    @RequestMapping("/addImage")
+    public String addImage(@ModelAttribute("image") Image image, HttpSession session, Model model, HttpServletRequest request) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return knowledgeService.addImage(image, session, model, request);
+    }
+
+    @RequestMapping("/deleteImage")
+    public String deleteImage(Integer id, HttpSession session, Model model, HttpServletRequest request) {
+        User user = (User) session.getAttribute("user");
+        if (user.getUsertype() == 1) {
+            model.addAttribute("errorMessage", "您没有权限！");
+            return "errorPage";
+        }
+        return knowledgeService.deleteImage(id, session, model, request);
     }
 }

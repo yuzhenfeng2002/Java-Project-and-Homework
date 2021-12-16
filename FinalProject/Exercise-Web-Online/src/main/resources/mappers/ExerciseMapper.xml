@@ -21,6 +21,9 @@
     <select id="selectAnswerByUser" resultType="Answer">
         select * from answer where exercise_id = #{id} and user_email = #{email}
     </select>
+    <select id="selectAnswerByUserAndSubject" resultType="Answer">
+        select answer.* from answer, exercise, knowledge where answer.exercise_id=exercise.id AND exercise.knowledge_id=knowledge.id and knowledge.subject_id=#{id} and user_email = #{email}
+    </select>
     <select id="selectAnswerByExerciseID" resultType="Answer">
         select * from answer where exercise_id = #{id} order by create_time desc
     </select>

@@ -1,6 +1,8 @@
 package com.Yuzhen.ExerciseOnline.auxiliary;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,5 +54,15 @@ public class Auxiliary {
         result.put("opt_num", count);
         result.put("modified_str", content.replace("<opt>", "- "));
         return result;
+    }
+
+    public static String getNewFileName(String oldFileName) {
+        int lastIndex = oldFileName.lastIndexOf(".");
+        String fileType = oldFileName.substring(lastIndex);
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDDHHmmssSSS");
+        String time = sdf.format(now);
+        String newFileName = time + fileType;
+        return newFileName;
     }
 }

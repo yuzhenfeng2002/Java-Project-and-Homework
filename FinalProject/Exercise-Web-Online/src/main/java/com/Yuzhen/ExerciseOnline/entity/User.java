@@ -17,7 +17,7 @@ public class User {
     private String university;
     private String ID;
     private String validateCode;
-    private byte usertype;
+    private byte usertype = 1;
 
     public String getEmail() {
         return email;
