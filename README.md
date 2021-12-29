@@ -8,7 +8,7 @@
 
 ### 前言
 
-本人使用Spring Boot+Thymeleaf+MyBatis框架实现了一个名为“E-Exercise”的学习答题网站，主要包括用户模块、知识模块和习题模块，并将其部署在云服务器上。在知识模块，实现了知识间依赖关系的构建，以Markdown标记语言作为知识模板；在习题模块，实现了习题作答、习题批改、习题推荐等功能，同时在原始Markdown语法的基础上，面向选择题拓展了该标记语言，使得用户能够较方便地添加习题。本网站没有采用XML标记语言作为知识和内容的模板，考虑到的是用户需求，因为不熟悉XML的用户较难使用，因此采用广受大众喜爱的简单易学的Markdown标记语言。本网站可以通过IP地址进行访问，登录界面的URL为http://47.103.73.100:8081/ExerciseOnline/user/toLogin。在答辩完成后本网站所有源代码将在GitHub上进行开源，遵循MIT License开源协议，网址为https://github.com/Feng-Yz/Java-Homework/tree/main/FinalProject/Exercise-Web-Online。
+本人使用Spring Boot+Thymeleaf+MyBatis框架实现了一个名为“E-Exercise”的学习答题网站，主要包括用户模块、知识模块和习题模块，并将其部署在云服务器上。在知识模块，实现了知识间依赖关系的构建，以Markdown标记语言作为知识模板；在习题模块，实现了习题作答、习题批改、习题推荐等功能，同时在原始Markdown语法的基础上，面向选择题拓展了该标记语言，使得用户能够较方便地添加习题。本网站没有采用XML标记语言作为知识和内容的模板，考虑到的是用户需求，因为不熟悉XML的用户较难使用，因此采用广受大众喜爱的简单易学的Markdown标记语言。本网站可以通过IP地址进行访问，登录界面的URL为[http://47.103.73.100:8081/ExerciseOnline/user/toLogin](http://47.103.73.100:8081/ExerciseOnline/user/toLogin)。在答辩完成后本网站所有源代码将在GitHub上进行开源，遵循MIT License开源协议。
 
 ### 运行环境
 
